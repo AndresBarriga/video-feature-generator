@@ -31,7 +31,7 @@ Then double-click **`setup-windows.bat`** (Windows) or **`setup-mac.command`**
 ## Make a video (every time)
 
 1. Open the **Claude desktop app → Code** tab.
-2. Choose the **feature-video-studio** folder as the project folder.
+2. Choose the unzipped folder (e.g. **video-feature-generator**) as the project folder.
 3. Type **`/make-video`** (or just "I want to make a video for my new feature").
 4. Answer Claude's questions, agree on the script, and drop in the screenshots
    it asks for (you can attach them right in the chat).
