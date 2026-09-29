@@ -13,6 +13,12 @@ This repo turns app screenshots into short feature videos. Users are usually
 - Before any stills/render: `npm run check`. After changes: `npm run stills`,
   read the PNGs, then show them.
 - Coordinates are in original image pixels; sizes in `assets/manifest.json`.
+- `npm run check` also reviews the screenshots (sizes, resolution, orientation,
+  device corners, caption reading time). Explain each warning in plain words.
+- Exports: `npm run render:all` (all formats / `--variants`), `npm run cover`,
+  `npm run stills -- --format landscape --variant es`. Other languages and shorter
+  cuts are `variants` in the config, never copies of the file.
+- Setup problems: run `npm run doctor` and relay its advice in plain words.
 - Never put real customer data in videos. Never recreate a logo with text.
 - Speak plainly. Don't ask the user to run commands you can run yourself.
 - Windows: keep the repo in a short path (e.g. `C:\Users\<you>\feature-video-studio`);

@@ -30,6 +30,15 @@ if errorlevel 1 (
 )
 call node scripts\prepare-assets.mjs
 echo.
+echo  Checking that everything is ready (the first time it downloads a small
+echo  rendering browser, about 90 MB)...
+call node scripts\doctor.mjs
+if errorlevel 1 (
+  echo  Fix the points marked with an arrow above, then double-click this file again.
+  echo  Or open the Claude app in this folder and ask: "the setup check failed, can you fix it?"
+  pause
+  exit /b 1
+)
 echo  All set!
 echo  Next: open the Claude desktop app, Code tab, choose this folder,
 echo  and type  /make-video

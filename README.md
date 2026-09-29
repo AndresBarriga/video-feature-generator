@@ -49,9 +49,18 @@ screenshots), less after that.
 
 - 12–20 seconds, silent, captions on top (readable on a phone).
 - Opens on a real-world photo, dives into the device screen, shows the feature
-  with a cursor and highlights, ends on a branded card with your call to action.
+  with a cursor, highlights, "look here" labels and zooms to details, ends on a
+  branded card with your call to action.
+- Your screenshots in a **browser, laptop, monitor, phone or iPad frame**, on a
+  designed backdrop; text can be typed into fields; captions appear word by word.
 - Your logo, colors and font. Formats: **portrait 4:5** (LinkedIn/Instagram),
-  **square 1:1**, **landscape 16:9** (website, YouTube, slides).
+  **square 1:1**, **landscape 16:9** (website, YouTube, slides) — all three
+  with one command.
+- Ready-made structures: **launch, quick tutorial, old vs new way, before/after,
+  mobile app**. Other languages and shorter cuts as variants of the same video,
+  plus a cover image for each format.
+- Claude checks your screenshots before building (same size, big enough, right
+  orientation) and `npm run doctor` explains any setup problem in plain words.
 
 ## Good to know
 
@@ -66,7 +75,8 @@ screenshots), less after that.
 
 ## More
 
-- [User guide](docs/USER-GUIDE.md) — screenshots, reviewing, asking for changes, editing text yourself
+- [Quick start](docs/QUICKSTART.md) — from download to your first video in 10 minutes
+- [User guide](docs/USER-GUIDE.md) — screenshots, reviewing, asking for changes, exports, editing text yourself
 - [Config reference](docs/CONFIG-REFERENCE.md) — every option in `video.config.json`
 - [Build guide](docs/BUILD-GUIDE.md) — how it works and how to extend it (for developers)
 - [Craft rules](.claude/skills/make-video/references/craft-rules.md) — what makes these videos work

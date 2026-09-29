@@ -1,0 +1,66 @@
+{
+  "title": "Old way vs new way",
+  "format": "portrait",
+  "fps": 30,
+  "brand": {
+    "primary": "#2b1d5c",
+    "accent": "#ff7a59",
+    "success": "#34c38f",
+    "background": "#f5f4fb",
+    "backdrop": "soft",
+    "font": "Inter"
+  },
+  "scenes": [
+    {
+      "type": "screen",
+      "image": "screens/demo-01-before.png",
+      "seconds": 3.4,
+      "caption": "**[Before]:**\n[X steps, X minutes]",
+      "highlights": [
+        {
+          "x": 112,
+          "y": 240,
+          "w": 1056,
+          "h": 510,
+          "from": 0.4
+        }
+      ]
+    },
+    {
+      "type": "screen",
+      "image": "screens/demo-03-after.png",
+      "seconds": 3.4,
+      "caption": "**[Now]:**\n[1 step, seconds]",
+      "transitionIn": "slide-left",
+      "focus": {
+        "x": 640,
+        "y": 470,
+        "width": 1280,
+        "height": 560
+      }
+    },
+    {
+      "type": "screen",
+      "image": "screens/demo-03-after.png",
+      "seconds": 5.2,
+      "caption": "[Concrete proof]\n**[e.g. 50 % less time]**",
+      "sub": "[Where the number comes from]",
+      "detail": {
+        "focus": {
+          "x": 640,
+          "y": 330,
+          "width": 900
+        },
+        "from": 0.6
+      }
+    },
+    {
+      "type": "end",
+      "seconds": 3.2,
+      "headline": "[Feature name]",
+      "tagline": "[for Product]",
+      "subline": "[One supporting line.]",
+      "cta": "[Try it free]"
+    }
+  ]
+}

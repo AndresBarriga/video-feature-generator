@@ -2,3 +2,4 @@ node_modules/
 out/
 *.remotion-in-progress
 .DS_Store
+videos/*/exports/

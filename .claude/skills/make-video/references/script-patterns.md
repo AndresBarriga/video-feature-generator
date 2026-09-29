@@ -4,6 +4,13 @@ Pick one, adapt to the feature. Durations are for 30 fps social cuts.
 All of them work with the current engine (photo, screen, end scenes) — no
 custom code needed. Captions below are placeholders in [brackets].
 
+Each pattern has a ready-made starting config in `templates/`:
+`node scripts/new-video.mjs "My video" --template <name>` —
+A = `problem-solution`, B = `before-after`, C/E = `tutorial`, D = `launch`,
+F = `comparison`, G = `mobile`. The templates use the demo images as
+placeholders, so they render immediately; replace the images and the text in
+[brackets].
+
 ## A. Problem → solution (default, ~15–20 s)
 | # | s | On screen | Caption |
 |---|---|---|---|

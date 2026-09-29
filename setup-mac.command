@@ -27,6 +27,14 @@ if ! npm install --no-fund --no-audit; then
 fi
 node scripts/prepare-assets.mjs
 echo
+echo " Checking that everything is ready (the first time it downloads a small"
+echo " rendering browser, about 90 MB)..."
+if ! node scripts/doctor.mjs; then
+  echo " Fix the points marked with an arrow above, then double-click this file again."
+  echo " Or open the Claude app in this folder and ask: \"the setup check failed, can you fix it?\""
+  read -r -p " Press Enter to close…"
+  exit 1
+fi
 echo " All set!"
 echo " Next: open the Claude desktop app, Code tab, choose this folder,"
 echo " and type  /make-video"

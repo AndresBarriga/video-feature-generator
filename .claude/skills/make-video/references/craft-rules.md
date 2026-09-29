@@ -21,6 +21,13 @@ them by default; break one only if the user asks.
 - **Same caption across connected beats** → it stays still (no flicker).
 - 1–2 **keywords** per caption in the accent color. Not whole sentences.
 - ≤ ~7 words per line, max 2 lines, plus an optional short sub-line.
+- Captions enter word by word (default `captionStyle: "words"`); the first one is
+  already complete on frame 0, because that frame is the thumbnail. A caption
+  needs ~0.9 s + 0.35 s per word on screen — `npm run check` warns when a scene
+  is too short for its caption.
+- **Other languages / shorter cuts** are variants of the same video, not copies:
+  a translated caption is usually longer, so re-check reading time and line
+  length (`npm run stills -- --variant <name>`).
 - Be precise about claims. Example from production: "Only the phone number left
   to type" was wrong — mandatory fields vary per customer — so it became
   "Missing a **required field**? The app asks for it." + "Each workspace decides
@@ -33,6 +40,20 @@ them by default; break one only if the user asks.
   one straight line, clicks (ripple), pauses. Pure "look at this" moments use a
   highlight box instead of a cursor.
 - **Slow push-ins** (zoomTo 1.05–1.12) keep static screens alive.
+- **One attention device per scene.** A scene can have a highlight, a callout,
+  a detail zoom or typed text — pick the one that fits, don't stack them. If
+  the cursor clicks, the cursor is the star.
+- **Callouts** say what to notice in ≤ 4 words ("**7 tasks**, 5 apps"), sit on
+  the side with empty space, and never cover the thing they point at.
+- **Detail zoom** for one small number or label that a phone screen would
+  otherwise make unreadable; give it ≥ 1 s to arrive and ≥ 1.5 s to be read.
+- **Typed text** only for short, realistic, fictional input; make sure the
+  scene lasts long enough for it to finish (the checker warns).
+- **One device frame per video.** Use the frame the product really runs on
+  (browser for web apps, phone for mobile), and the same one on every screen.
+  A frame shrinks the screenshot a little, so crop with `focus` for readability.
+- **Backdrop:** `soft` is the safe default; `dots`/`grid` for technical
+  products, `glow` for a launch. Never a busy pattern behind a dense UI.
 - Continuity: when the next scene shows the same screen in a new state, use
   `states` inside one scene instead of a new scene.
 
