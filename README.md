@@ -23,7 +23,7 @@ app) — no API keys, no per-video fees. Rendering happens on your computer.
 2. **Node.js (LTS version)** — a free helper program that builds the video.
    → [nodejs.org](https://nodejs.org) → download the **LTS** installer → next, next, finish.
 3. **This folder** on your computer: on GitHub click **Code → Download ZIP**,
-   then unzip it somewhere simple, e.g. `Documents\feature-video-studio`.
+   then unzip it somewhere with a short path, e.g. `Documents\video-feature-generator`.
 
 Then double-click **`setup-windows.bat`** (Windows) or **`setup-mac.command`**
 (Mac). It checks everything and installs what's missing (~2 minutes, once).
