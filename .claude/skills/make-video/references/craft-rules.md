@@ -41,7 +41,7 @@ them by default; break one only if the user asks.
   frame is unreadable.
 - Fictional data only. Keep it consistent across all screenshots (same person,
   same numbers, same date format as the app).
-- Dates/names in the app's real format (e.g. "Mrs. Lindqvist Emma" if that's how
+- Dates/names in the app's real format (e.g. "Mr. Novak Adam" if that's how
   the app shows names).
 - If a document/object is shown, make it look like the real thing (a passport is
   a booklet page, not an ID card) — people notice.
