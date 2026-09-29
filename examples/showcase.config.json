@@ -48,7 +48,7 @@
       "sub": "Zoom into what matters.",
       "transitionIn": "slide-left",
       "detail": { "focus": { "x": 340, "y": 380, "width": 640 }, "from": 1 },
-      "callouts": [{ "x": 205, "y": 381, "text": "**High** priority first", "side": "right", "from": 1.7 }]
+      "callouts": [{ "x": 270, "y": 381, "text": "**High** priority first", "side": "right", "from": 1.7 }]
     },
     {
       "type": "end",
