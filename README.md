@@ -9,7 +9,7 @@ presentation.
 
 ![Example frames](docs/example-frames.png)
 
-▶ [Watch the demo video](docs/demo-video.mp4) (14 s, fictional task-management app)
+▶ [Watch the demo video](docs/demo-video.mp4) (13 s, fictional task-management app)
 
 It runs on **your own Claude subscription** (Claude Code in the Claude desktop
 app) — no API keys, no per-video fees. Rendering happens on your computer.
