@@ -1,0 +1,74 @@
+{
+  "title": "Taskly — Showcase (example)",
+  "format": "portrait",
+  "fps": 30,
+  "captionStyle": "words",
+  "brand": {
+    "primary": "#2b1d5c",
+    "accent": "#ff7a59",
+    "success": "#34c38f",
+    "background": "#f5f4fb",
+    "backdrop": "soft",
+    "font": "Inter",
+    "logo": "brand/demo-logo.png"
+  },
+  "cover": { "headline": "Organize my\n**week**", "sub": "One click. Every task in its place." },
+  "scenes": [
+    {
+      "type": "screen",
+      "device": "browser",
+      "url": "taskly.example/inbox",
+      "image": "screens/demo-01-before.png",
+      "seconds": 3.2,
+      "caption": "Tasks scattered across\n**five apps**?",
+      "callouts": [{ "x": 283, "y": 197, "text": "**7 tasks**, 5 apps", "side": "right", "from": 0.8 }]
+    },
+    {
+      "type": "screen",
+      "device": "browser",
+      "url": "taskly.example/inbox",
+      "image": "screens/demo-04-add.png",
+      "seconds": 3.6,
+      "caption": "Type it once.\nTaskly **does the rest**.",
+      "transitionIn": "slide-up",
+      "typing": [
+        {
+          "x": 344, "y": 346, "text": "Renew the design tool license", "from": 0.6, "size": 26, "weight": 600, "color": "#241f3d",
+          "clear": { "w": 620, "h": 44 }
+        }
+      ]
+    },
+    {
+      "type": "screen",
+      "device": "browser",
+      "url": "taskly.example/week",
+      "image": "screens/demo-03-after.png",
+      "seconds": 4,
+      "caption": "Priorities set,\n**automatically.**",
+      "sub": "Zoom into what matters.",
+      "transitionIn": "slide-left",
+      "detail": { "focus": { "x": 340, "y": 380, "width": 640 }, "from": 1 },
+      "callouts": [{ "x": 205, "y": 381, "text": "**High** priority first", "side": "right", "from": 1.7 }]
+    },
+    {
+      "type": "end",
+      "seconds": 3,
+      "headline": "Organize my week",
+      "tagline": "with Taskly",
+      "subline": "One click.\nEvery task in its place.",
+      "cta": "Try it free"
+    }
+  ],
+  "variants": {
+    "es": {
+      "title": "Taskly — Showcase (ES)",
+      "scenes": {
+        "1": { "caption": "¿Tareas repartidas en\n**cinco apps**?", "callouts": [{ "x": 283, "y": 197, "text": "**7 tareas**, 5 apps", "side": "right", "from": 0.8 }] },
+        "2": { "caption": "Escríbela una vez.\nTaskly **hace el resto**." },
+        "3": { "caption": "Prioridades\n**automáticas.**", "sub": "Zoom a lo importante." },
+        "4": { "headline": "Organiza mi semana", "tagline": "con Taskly", "subline": "Un clic.\nCada tarea en su sitio.", "cta": "Pruébalo gratis" }
+      }
+    },
+    "short": { "title": "Taskly — Showcase (short)", "drop": [1], "targetSeconds": 8 }
+  }
+}

@@ -18,7 +18,7 @@ const UI = {
   font: '"Segoe UI", Arial, sans-serif',
 };
 
-type State = "before" | "dialog" | "after";
+type State = "before" | "dialog" | "after" | "add";
 
 type Priority = "High" | "Medium" | "Low";
 const PRIORITY_COLOR: Record<Priority, string> = { High: "#e5484d", Medium: "#f0a020", Low: "#3b82f6" };
@@ -83,6 +83,7 @@ const Chip: React.FC<{ label: string; color: string; solid?: boolean }> = ({ lab
 // Geometry (image px) referenced by the demo video.config.json:
 //   "Organize my week" button: x 908–1168, y 144–196  (click at 1038, 170)
 //   the sorted board (after):  x 112–1168, y 240–770
+//   "New task" input (add): text starts at x 344, y 346 (box x 292–988, y 330–394)
 export const DemoScreen: React.FC<{ state: State }> = ({ state }) => {
   const after = state === "after";
   return (
@@ -200,6 +201,21 @@ export const DemoScreen: React.FC<{ state: State }> = ({ state }) => {
           </div>
         )}
       </div>
+
+      {state === "add" && (
+        <AbsoluteFill style={{ background: "rgba(30, 24, 60, 0.5)" }}>
+          <div style={{ position: "absolute", left: 290, top: 210, width: 700, height: 400, background: "#fff", borderRadius: 16, padding: "32px 36px", boxSizing: "border-box" }}>
+            <div style={{ fontSize: 32, fontWeight: 700 }}>New task</div>
+            <div style={{ fontSize: 18, color: UI.muted, margin: "30px 0 10px" }}>What needs to be done?</div>
+            <div style={{ height: 64, borderRadius: 10, border: `2px solid ${UI.brand}`, padding: "0 18px", display: "flex", alignItems: "center", fontSize: 26, color: UI.muted }}>
+              Type a task…
+            </div>
+            <div style={{ position: "absolute", right: 36, bottom: 32, background: UI.brand, color: "#fff", fontWeight: 700, fontSize: 22, borderRadius: 10, padding: "14px 34px" }}>
+              Add task
+            </div>
+          </div>
+        </AbsoluteFill>
+      )}
 
       {state === "dialog" && (
         <AbsoluteFill style={{ background: "rgba(30, 24, 60, 0.5)" }}>

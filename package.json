@@ -8,6 +8,9 @@
     "check": "node scripts/prepare-assets.mjs && node scripts/check-config.mjs && tsc --noEmit -p .",
     "stills": "node scripts/prepare-assets.mjs && node scripts/check-config.mjs && node scripts/stills.mjs",
     "render": "node scripts/prepare-assets.mjs && node scripts/check-config.mjs && remotion render src/index.ts Video out/video.mp4",
+    "render:all": "node scripts/prepare-assets.mjs && node scripts/check-config.mjs && node scripts/render-all.mjs",
+    "cover": "node scripts/prepare-assets.mjs && node scripts/check-config.mjs && node scripts/cover.mjs",
+    "doctor": "node scripts/doctor.mjs",
     "demo-assets": "node scripts/demo-assets.mjs"
   },
   "dependencies": {
