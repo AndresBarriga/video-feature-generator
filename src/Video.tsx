@@ -31,6 +31,8 @@ export const Video: React.FC = () => (
         {MAIN.flatMap((scene, i) => {
           const enter = i === 0 ? "cut" : scene.transitionIn ?? "cut";
           const next = MAIN[i + 1]?.type === "screen" ? (MAIN[i + 1] as ScreenSceneT) : undefined;
+          const prev = MAIN[i - 1];
+          const afterDive = prev?.type === "photo" && !!prev.diveIntoNext;
           return [
             enter !== "cut" ? (
               <TransitionSeries.Transition
@@ -40,7 +42,7 @@ export const Video: React.FC = () => (
               />
             ) : null,
             <TransitionSeries.Sequence key={`s${i}`} durationInFrames={frames(scene.seconds)}>
-              {scene.type === "screen" && <ScreenScene scene={scene} />}
+              {scene.type === "screen" && <ScreenScene scene={scene} afterDive={afterDive} />}
               {scene.type === "photo" && <PhotoScene scene={scene} next={next} />}
             </TransitionSeries.Sequence>,
           ].filter(Boolean) as React.ReactElement[];

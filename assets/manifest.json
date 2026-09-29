@@ -18,5 +18,13 @@
   "screens/demo-03-after.png": {
     "width": 1280,
     "height": 900
+  },
+  "screens/demo-phone-after.png": {
+    "width": 780,
+    "height": 1688
+  },
+  "screens/demo-phone-before.png": {
+    "width": 780,
+    "height": 1688
   }
 }

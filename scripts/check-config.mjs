@@ -38,6 +38,9 @@ let total = 0;
     img(s.image, where);
     (s.states ?? []).forEach((st) => img(st.image, where));
     const m = manifest[s.image];
+    if (s.device && s.device !== "phone") errors.push(`${where}: device must be "phone" (or leave it out)`);
+    if (s.device === "phone" && m && m.width > m.height)
+      warn.push(`${where}: device "phone" is meant for portrait screenshots, but this one is landscape`);
     (s.clicks ?? []).forEach((c) => {
       if (c.at > s.seconds) errors.push(`${where}: a click happens at ${c.at}s but the scene lasts ${s.seconds}s`);
       if (m && (c.x < 0 || c.y < 0 || c.x > m.width || c.y > m.height))

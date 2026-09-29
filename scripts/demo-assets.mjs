@@ -11,6 +11,8 @@ const jobs = [
   ["DemoScreen", { state: "before" }, "assets/screens/demo-01-before.png"],
   ["DemoScreen", { state: "dialog" }, "assets/screens/demo-02-dialog.png"],
   ["DemoScreen", { state: "after" }, "assets/screens/demo-03-after.png"],
+  ["DemoPhoneScreen", { state: "before" }, "assets/screens/demo-phone-before.png"],
+  ["DemoPhoneScreen", { state: "after" }, "assets/screens/demo-phone-after.png"],
   ["DemoDesk", {}, "assets/photos/demo-desk.png"],
   ["DemoLogo", {}, "assets/brand/demo-logo.png"],
 ];

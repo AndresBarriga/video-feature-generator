@@ -26,6 +26,8 @@ export type ScreenScene = Base & {
   /** Extra screenshots of the SAME screen, swapped in at `from` seconds (e.g. empty -> filled). */
   states?: { image: string; from: number }[];
   focus?: Focus;
+  /** Draw a phone frame around the screenshot (for mobile app screenshots). */
+  device?: "phone";
   /** Slow camera push-in over the scene, e.g. 1.1 */
   zoomTo?: number;
   /** Cursor clicks, in screenshot pixels; `at` = seconds from scene start. */

@@ -324,3 +324,62 @@ export const DemoLogo: React.FC = () => (
     </div>
   </AbsoluteFill>
 );
+
+// Phone screenshot (390x844 CSS px, exported at 2x = 780x1688) for the
+// mobile example (examples/mobile.config.json, scene option device: "phone").
+//   "Organize" button: x 130–650, y 1500–1580 (click at 390, 1540)
+export const DemoPhoneScreen: React.FC<{ state: "before" | "after" }> = ({ state }) => {
+  const after = state === "after";
+  const rows = after ? COLUMNS[0].cards : INBOX.slice(0, 6).map((t) => ({ title: t.title, due: t.due, priority: undefined as Priority | undefined, from: t.from }));
+  return (
+    <AbsoluteFill style={{ background: UI.bg, fontFamily: UI.font, color: UI.text }}>
+      <div style={{ width: 390, height: 844, transform: "scale(2)", transformOrigin: "0 0", position: "relative" }}>
+        <div style={{ position: "absolute", left: 24, top: 74 }}>
+          <div style={{ fontSize: 30, fontWeight: 700 }}>{after ? "Today" : "All tasks"}</div>
+          <div style={{ fontSize: 15, color: UI.muted, marginTop: 4 }}>{after ? "3 tasks · sorted by priority" : "7 tasks · from 5 apps"}</div>
+        </div>
+        <div style={{ position: "absolute", left: 20, right: 20, top: 150 }}>
+          {rows.map((r) => (
+            <div key={r.title} style={{ background: "#fff", border: `1px solid ${UI.border}`, borderRadius: 14, padding: "14px 16px", marginBottom: 12 }}>
+              <div style={{ fontSize: 17, fontWeight: 600, lineHeight: 1.25 }}>{r.title}</div>
+              <div style={{ marginTop: 10, display: "flex", alignItems: "center", gap: 10 }}>
+                {"priority" in r && r.priority ? (
+                  <Chip label={r.priority} color={PRIORITY_COLOR[r.priority]} solid />
+                ) : (
+                  <Chip label={(r as { from: string }).from} color={UI.muted} />
+                )}
+                <span style={{ fontSize: 14, color: UI.muted }}>{r.due}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div
+          style={{
+            position: "absolute",
+            left: 65,
+            width: 260,
+            top: 750,
+            height: 40,
+            borderRadius: 12,
+            background: after ? UI.green : UI.brand,
+            color: "#fff",
+            fontSize: 17,
+            fontWeight: 700,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 8,
+          }}
+        >
+          {after ? (
+            <>
+              <Check size={18} /> Organized
+            </>
+          ) : (
+            "Organize my week"
+          )}
+        </div>
+      </div>
+    </AbsoluteFill>
+  );
+};

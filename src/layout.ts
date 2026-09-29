@@ -22,7 +22,7 @@ export type Placement = { scale: number; cx: number; cy: number };
 
 /** Fit `focus` into the content area. Default: whole image contained ("screen")
  *  or cover-filled ("photo"). */
-export const placeImage = (path: string, focus: Focus | undefined, mode: "contain" | "cover"): Placement => {
+export const placeImage = (path: string, focus: Focus | undefined, mode: "contain" | "cover", margin = 0.94): Placement => {
   const { width: iw, height: ih } = imageSize(path);
   const aspect = CONTENT.w / CONTENT.h;
   if (focus) {
@@ -35,7 +35,7 @@ export const placeImage = (path: string, focus: Focus | undefined, mode: "contai
     return { scale: CONTENT.w / fw, cx: iw / 2, cy: ih / 2 };
   }
   // contain with a small margin so the screenshot reads as a screen
-  const scale = Math.min((CONTENT.w * 0.94) / iw, (CONTENT.h * 0.94) / ih);
+  const scale = Math.min((CONTENT.w * margin) / iw, (CONTENT.h * margin) / ih);
   return { scale, cx: iw / 2, cy: ih / 2 };
 };
 

@@ -7,11 +7,11 @@ import { Cursor } from "../components/Cursor";
 const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 
 /** First-frame placement of a screen scene (used by a photo scene diving into it). */
-export const screenPlacement = (s: ScreenSceneT) => placeImage(s.image, s.focus, "contain");
+export const screenPlacement = (s: ScreenSceneT) => placeImage(s.image, s.focus, "contain", s.device === "phone" ? 0.84 : 0.94); // phone: room for the frame
 
 // A screenshot of your app, framed on `focus`, with an optional slow push-in,
 // state swaps (same screen, new state), cursor clicks and glowing highlights.
-export const ScreenScene: React.FC<{ scene: ScreenSceneT }> = ({ scene }) => {
+export const ScreenScene: React.FC<{ scene: ScreenSceneT; afterDive?: boolean }> = ({ scene, afterDive }) => {
   const frame = useCurrentFrame();
   const dur = frames(scene.seconds);
   const p = screenPlacement(scene);
@@ -23,20 +23,57 @@ export const ScreenScene: React.FC<{ scene: ScreenSceneT }> = ({ scene }) => {
   const { width: iw, height: ih } = imageSize(current);
   const [left, top] = map(0, 0);
 
+  // Optional phone frame (device: "phone"), sized relative to the screenshot.
+  // After a photo dive the bezel fades in, so the flat landing stays seamless.
+  const phone = scene.device === "phone";
+  const k = p.scale * z;
+  const radius = phone ? iw * 0.11 * k : 10 * U;
+  const bezel = iw * 0.035 * k;
+  const bezelOpacity = afterDive ? interpolate(frame, [0, 10], [0, 1], clamp) : 1;
+
   return (
     <AbsoluteFill style={{ top: CONTENT.y, height: CONTENT.h, overflow: "hidden", backgroundColor: BRAND.background }}>
+      {phone && (
+        <div
+          style={{
+            position: "absolute",
+            left: left - bezel,
+            top: top - bezel,
+            width: iw * k + bezel * 2,
+            height: ih * k + bezel * 2,
+            borderRadius: radius + bezel,
+            background: "#15161b",
+            boxShadow: "0 18px 50px rgba(20, 30, 50, 0.28)",
+            opacity: bezelOpacity,
+          }}
+        />
+      )}
       <Img
         src={staticFile(current)}
         style={{
           position: "absolute",
           left,
           top,
-          width: iw * p.scale * z,
-          height: ih * p.scale * z,
-          borderRadius: 10 * U,
-          boxShadow: "0 18px 50px rgba(20, 30, 50, 0.18)",
+          width: iw * k,
+          height: ih * k,
+          borderRadius: radius,
+          boxShadow: phone ? undefined : "0 18px 50px rgba(20, 30, 50, 0.18)",
         }}
       />
+      {phone && (
+        <div
+          style={{
+            position: "absolute",
+            left: left + (iw * k) / 2 - iw * 0.14 * k,
+            top: top + iw * 0.03 * k,
+            width: iw * 0.28 * k,
+            height: iw * 0.075 * k,
+            borderRadius: 999,
+            background: "#15161b",
+            opacity: bezelOpacity,
+          }}
+        />
+      )}
 
       {(scene.highlights ?? []).map((hl, i) => {
         const from = (hl.from ?? 0) * FPS;

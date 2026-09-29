@@ -1,0 +1,32 @@
+{
+  "title": "Taskly Mobile — Organize my week (example)",
+  "format": "portrait",
+  "fps": 30,
+  "brand": {
+    "primary": "#2b1d5c",
+    "accent": "#ff7a59",
+    "success": "#34c38f",
+    "background": "#f5f4fb",
+    "font": "Inter",
+    "logo": "brand/demo-logo.png"
+  },
+  "scenes": [
+    {
+      "type": "screen",
+      "device": "phone",
+      "image": "screens/demo-phone-before.png",
+      "seconds": 5,
+      "caption": "**Organize** your week\nfrom your phone.",
+      "clicks": [{ "x": 390, "y": 1540, "at": 2 }],
+      "highlights": [{ "x": 130, "y": 1500, "w": 520, "h": 80, "from": 0.4, "to": 2.1 }],
+      "states": [{ "image": "screens/demo-phone-after.png", "from": 2.6 }]
+    },
+    {
+      "type": "end",
+      "seconds": 3,
+      "headline": "Taskly Mobile",
+      "tagline": "Your week, sorted.",
+      "cta": "Get the app"
+    }
+  ]
+}
