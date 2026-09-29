@@ -2,70 +2,89 @@ import { AbsoluteFill } from "remotion";
 import { quadMatrix3d } from "../components/perspective";
 import type { Pt } from "../config";
 
-// Fictional demo app "Acme Stays" used by the example video. These
-// compositions only generate the PNGs in assets/ (npm run demo-assets);
-// real users replace them with their own screenshots and photos.
+// Fictional demo app "Taskly" used by the example video. These compositions
+// only generate the PNGs in assets/ (npm run demo-assets); real users replace
+// them with their own screenshots and photos.
 
 const UI = {
-  bg: "#f3f6fb",
+  bg: "#f5f4fb",
   card: "#ffffff",
-  border: "#d8dee9",
-  text: "#1f2a3d",
-  muted: "#6b778c",
-  blue: "#2563eb",
-  green: "#8ac926",
+  border: "#e1def0",
+  text: "#241f3d",
+  muted: "#7a7594",
+  brand: "#5b45e0",
+  green: "#34c38f",
+  coral: "#ff7a59",
   font: '"Segoe UI", Arial, sans-serif',
 };
 
-type State = "empty" | "scan" | "filled";
+type State = "before" | "dialog" | "after";
 
-const Field: React.FC<{ label: string; value?: string }> = ({ label, value }) => (
-  <div>
-    <div style={{ fontSize: 17, color: UI.muted, marginBottom: 8 }}>{label}</div>
-    <div
-      style={{
-        fontSize: 24,
-        color: value ? UI.text : UI.muted,
-        fontWeight: value ? 600 : 400,
-        padding: "10px 14px",
-        borderRadius: 8,
-        background: value ? "rgba(138, 201, 38, 0.18)" : "transparent",
-        marginLeft: -14,
-      }}
-    >
-      {value ?? "Not specified"}
-    </div>
-  </div>
+type Priority = "High" | "Medium" | "Low";
+const PRIORITY_COLOR: Record<Priority, string> = { High: "#e5484d", Medium: "#f0a020", Low: "#3b82f6" };
+
+// The same 7 tasks in every screenshot, so the states line up.
+const INBOX = [
+  { title: "Reply to Dana about the Q3 budget", from: "Email", due: "Fri" },
+  { title: "Prepare slides for Monday's review", from: "Docs", due: "Mon" },
+  { title: "Fix the login bug reported by support", from: "Slack", due: "Today" },
+  { title: "Book flights for the team offsite", from: "Notes", due: "—" },
+  { title: "Send meeting notes to the team", from: "Calendar", due: "Today" },
+  { title: "Update the onboarding checklist", from: "Docs", due: "Next week" },
+  { title: "Renew the design tool license", from: "Email", due: "Oct 30" },
+];
+
+const COLUMNS: { name: string; cards: { title: string; due: string; priority: Priority }[] }[] = [
+  {
+    name: "Today",
+    cards: [
+      { title: "Fix the login bug reported by support", due: "Today", priority: "High" },
+      { title: "Reply to Dana about the Q3 budget", due: "Today", priority: "High" },
+      { title: "Send meeting notes to the team", due: "Today", priority: "Medium" },
+    ],
+  },
+  {
+    name: "This week",
+    cards: [
+      { title: "Prepare slides for Monday's review", due: "Mon", priority: "Medium" },
+      { title: "Update the onboarding checklist", due: "Wed", priority: "Low" },
+    ],
+  },
+  {
+    name: "Later",
+    cards: [
+      { title: "Renew the design tool license", due: "Oct 30", priority: "Medium" },
+      { title: "Book flights for the team offsite", due: "Nov 8", priority: "Low" },
+    ],
+  },
+];
+
+const Check: React.FC<{ size: number; color?: string }> = ({ size, color = "#fff" }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={3.4} strokeLinecap="round" strokeLinejoin="round">
+    <path d="M5 12.5l4.5 4.5L19 7.5" />
+  </svg>
 );
 
-const Button: React.FC<{ label: string; top: number; primary?: boolean }> = ({ label, top, primary }) => (
-  <div
+const Chip: React.FC<{ label: string; color: string; solid?: boolean }> = ({ label, color, solid }) => (
+  <span
     style={{
-      position: "absolute",
-      left: 32,
-      right: 32,
-      top,
-      height: 56,
-      borderRadius: 8,
-      border: `1.5px solid ${primary ? UI.blue : UI.border}`,
-      background: primary ? UI.blue : "#fff",
-      color: primary ? "#fff" : UI.text,
-      fontSize: 22,
-      fontWeight: 600,
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
+      fontSize: 15,
+      fontWeight: 700,
+      color: solid ? "#fff" : color,
+      background: solid ? color : `${color}22`,
+      borderRadius: 999,
+      padding: "4px 12px",
     }}
   >
     {label}
-  </div>
+  </span>
 );
 
-// Card geometry (image px) — referenced by the demo video.config.json:
-//   "Scan ID document" button: x 112–1168, y 240–296  (click at 400, 268)
-//   fields grid: x 112–1168, y 430–700
+// Geometry (image px) referenced by the demo video.config.json:
+//   "Organize my week" button: x 908–1168, y 144–196  (click at 1038, 170)
+//   the sorted board (after):  x 112–1168, y 240–770
 export const DemoScreen: React.FC<{ state: State }> = ({ state }) => {
-  const filled = state === "filled";
+  const after = state === "after";
   return (
     <AbsoluteFill style={{ background: UI.bg, fontFamily: UI.font, color: UI.text }}>
       <div
@@ -76,11 +95,16 @@ export const DemoScreen: React.FC<{ state: State }> = ({ state }) => {
           display: "flex",
           alignItems: "center",
           padding: "0 40px",
+          gap: 14,
           fontSize: 26,
           fontWeight: 700,
         }}
       >
-        Acme Stays <span style={{ fontWeight: 400, color: UI.muted, marginLeft: 14 }}>· Guest check-in</span>
+        <div style={{ width: 38, height: 38, borderRadius: 11, background: UI.brand, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <Check size={24} />
+        </div>
+        Taskly
+        <span style={{ fontWeight: 400, color: UI.muted }}>· {after ? "My week" : "Inbox"}</span>
       </div>
 
       <div
@@ -92,175 +116,127 @@ export const DemoScreen: React.FC<{ state: State }> = ({ state }) => {
           height: 740,
           background: UI.card,
           border: `1px solid ${UI.border}`,
-          borderRadius: 12,
+          borderRadius: 14,
         }}
       >
-        <div style={{ position: "absolute", left: 32, top: 30, display: "flex", alignItems: "center", gap: 18 }}>
-          <div style={{ position: "relative" }}>
-            <div
-              style={{
-                width: 60,
-                height: 60,
-                borderRadius: "50%",
-                background: UI.blue,
-                color: "#fff",
-                fontWeight: 800,
-                fontSize: 22,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              NA
-            </div>
-            {filled && (
-              <div
-                style={{
-                  position: "absolute",
-                  right: -8,
-                  bottom: -6,
-                  width: 30,
-                  height: 30,
-                  borderRadius: "50%",
-                  background: UI.green,
-                  border: "3px solid #fff",
-                  color: "#1d2b53",
-                  fontWeight: 900,
-                  fontSize: 18,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                ✓
-              </div>
-            )}
-          </div>
-          <div>
-            <div style={{ fontSize: 30, fontWeight: 700 }}>Mr. Novak Adam</div>
-            <div style={{ fontSize: 18, color: UI.muted }}>Adult · Room 412</div>
+        <div style={{ position: "absolute", left: 32, top: 26 }}>
+          <div style={{ fontSize: 32, fontWeight: 700 }}>{after ? "This week" : "All tasks"}</div>
+          <div style={{ fontSize: 18, color: UI.muted, marginTop: 4 }}>
+            {after ? "7 tasks · sorted by priority" : "7 tasks · from 5 apps"}
           </div>
         </div>
-        <Button label="Scan ID document" top={120} />
-        <div style={{ position: "absolute", top: 184, left: 0, right: 0, textAlign: "center", color: UI.muted, fontSize: 17 }}>
-          or
-        </div>
-        <Button label="Enter details manually" top={214} />
         <div
           style={{
             position: "absolute",
-            left: 32,
             right: 32,
-            top: 310,
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            rowGap: 40,
-            columnGap: 40,
+            top: 24,
+            width: 260,
+            height: 52,
+            borderRadius: 10,
+            background: after ? UI.green : UI.brand,
+            color: "#fff",
+            fontSize: 21,
+            fontWeight: 700,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 10,
           }}
         >
-          <Field label="Nationality" value={filled ? "Czechia" : undefined} />
-          <Field label="Date of birth" value={filled ? "1987-06-21" : undefined} />
-          <Field label="Document" value={filled ? "ID card · CZ482193" : undefined} />
-          <Field label="Expiry date" value={filled ? "2031-02-11" : undefined} />
+          {after ? (
+            <>
+              <Check size={22} /> Organized
+            </>
+          ) : (
+            "Organize my week"
+          )}
         </div>
+
+        {!after && (
+          <div style={{ position: "absolute", left: 32, right: 32, top: 118 }}>
+            {INBOX.map((t) => (
+              <div
+                key={t.title}
+                style={{ height: 72, borderBottom: `1px solid ${UI.border}`, display: "flex", alignItems: "center", gap: 18 }}
+              >
+                <div style={{ width: 26, height: 26, borderRadius: "50%", border: `2.5px solid ${UI.border}` }} />
+                <div style={{ flex: 1, fontSize: 24, fontWeight: 600 }}>{t.title}</div>
+                <Chip label={t.from} color={UI.muted} />
+                <div style={{ width: 110, textAlign: "right", fontSize: 19, color: UI.muted }}>{t.due}</div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {after && (
+          <div style={{ position: "absolute", left: 32, right: 32, top: 118, display: "flex", gap: 24 }}>
+            {COLUMNS.map((col) => (
+              <div key={col.name} style={{ flex: 1, background: UI.bg, borderRadius: 12, padding: 16, height: 498, boxSizing: "border-box" }}>
+                <div style={{ fontSize: 21, fontWeight: 700, marginBottom: 14 }}>
+                  {col.name} <span style={{ color: UI.muted, fontWeight: 500 }}>· {col.cards.length}</span>
+                </div>
+                {col.cards.map((c) => (
+                  <div
+                    key={c.title}
+                    style={{
+                      background: "#fff",
+                      border: `1px solid ${UI.border}`,
+                      borderRadius: 10,
+                      padding: "14px 16px",
+                      marginBottom: 12,
+                      height: 112,
+                      boxSizing: "border-box",
+                    }}
+                  >
+                    <div style={{ fontSize: 20, fontWeight: 600, lineHeight: 1.25 }}>{c.title}</div>
+                    <div style={{ marginTop: 10, display: "flex", alignItems: "center", gap: 12 }}>
+                      <Chip label={c.priority} color={PRIORITY_COLOR[c.priority]} solid />
+                      <span style={{ fontSize: 16, color: UI.muted }}>{c.due}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
-      {state === "scan" && (
-        <AbsoluteFill style={{ background: "rgba(20, 28, 45, 0.45)" }}>
+      {state === "dialog" && (
+        <AbsoluteFill style={{ background: "rgba(30, 24, 60, 0.5)" }}>
           <div
             style={{
               position: "absolute",
-              left: 190,
-              top: 110,
-              width: 900,
-              height: 710,
+              left: 260,
+              top: 150,
+              width: 760,
+              height: 600,
               background: "#fff",
-              borderRadius: 12,
-              padding: "26px 30px",
+              borderRadius: 16,
+              padding: "32px 36px",
               boxSizing: "border-box",
             }}
           >
-            <div style={{ fontSize: 28, fontWeight: 700 }}>Scan document</div>
-            <div style={{ fontSize: 18, color: UI.muted, marginTop: 6 }}>Hold the ID inside the frame</div>
-            <div
-              style={{
-                position: "absolute",
-                left: 30,
-                right: 30,
-                top: 110,
-                bottom: 30,
-                borderRadius: 10,
-                background: "radial-gradient(ellipse at 50% 55%, #2a2d33 0%, #0b0c0e 75%)",
-                overflow: "hidden",
-              }}
-            >
-              <div
-                style={{
-                  position: "absolute",
-                  left: 150,
-                  top: 110,
-                  width: 540,
-                  height: 340,
-                  borderRadius: 18,
-                  background: "linear-gradient(135deg, #cfe6f5, #f7dcc2)",
-                  boxShadow: "0 16px 40px rgba(0,0,0,0.5)",
-                }}
-              >
-                <div style={{ position: "absolute", left: 28, top: 24, fontSize: 15, fontWeight: 800, color: "#1d3b7a", letterSpacing: 2 }}>
-                  IDENTITY CARD
-                </div>
-                <div style={{ position: "absolute", left: 28, top: 60, width: 120, height: 150, borderRadius: 8, background: "#9fb7d9" }} />
-                <div style={{ position: "absolute", left: 170, top: 66, fontSize: 18, fontWeight: 700, color: "#111", lineHeight: 1.7 }}>
-                  NOVAK
-                  <br />
-                  ADAM
-                  <br />
-                  21 JUN 1987
-                </div>
+            <div style={{ fontSize: 32, fontWeight: 700 }}>Organize my week</div>
+            <div style={{ fontSize: 19, color: UI.muted, marginTop: 6 }}>Taskly sorts every task for you.</div>
+            <div style={{ marginTop: 34 }}>
+              {["Group by priority", "Use due dates", "Balance my workload"].map((o) => (
                 <div
-                  style={{
-                    position: "absolute",
-                    left: 22,
-                    right: 22,
-                    bottom: 22,
-                    fontFamily: "Consolas, monospace",
-                    fontSize: 17,
-                    color: "#111",
-                    background: "rgba(138, 201, 38, 0.45)",
-                    borderRadius: 4,
-                    padding: "4px 8px",
-                    lineHeight: 1.5,
-                  }}
+                  key={o}
+                  style={{ height: 74, borderRadius: 12, border: `1.5px solid ${UI.border}`, marginBottom: 14, display: "flex", alignItems: "center", padding: "0 22px", gap: 18 }}
                 >
-                  IDCZECZ482193&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;
-                  <br />
-                  8706211M3102118CZE&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;
+                  <div style={{ width: 34, height: 34, borderRadius: 10, background: UI.brand, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <Check size={22} />
+                  </div>
+                  <div style={{ fontSize: 24, fontWeight: 600 }}>{o}</div>
                 </div>
-              </div>
-              <div
-                style={{
-                  position: "absolute",
-                  left: 40,
-                  right: 40,
-                  top: 330,
-                  height: 140,
-                  border: `3px solid ${UI.green}`,
-                  borderRadius: 12,
-                  boxShadow: `0 0 24px ${UI.green}`,
-                }}
-              />
-              <div
-                style={{
-                  position: "absolute",
-                  top: 40,
-                  left: 0,
-                  right: 0,
-                  textAlign: "center",
-                }}
-              >
-                <span style={{ background: UI.green, color: "#1d2b53", fontWeight: 800, fontSize: 20, borderRadius: 999, padding: "8px 20px" }}>
-                  ✓ Document captured
-                </span>
+              ))}
+            </div>
+            <div style={{ marginTop: 26, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <span style={{ display: "inline-flex", alignItems: "center", gap: 10, background: `${UI.green}26`, color: "#12795a", fontWeight: 700, fontSize: 21, borderRadius: 999, padding: "10px 22px" }}>
+                <Check size={20} color="#12795a" /> 7 tasks ready
+              </span>
+              <div style={{ background: UI.brand, color: "#fff", fontWeight: 700, fontSize: 22, borderRadius: 10, padding: "14px 34px" }}>
+                Apply
               </div>
             </div>
           </div>
@@ -270,33 +246,42 @@ export const DemoScreen: React.FC<{ state: State }> = ({ state }) => {
   );
 };
 
-// Desk illustration with a tablet. The screen corners are in the demo config
+// Desk illustration with a laptop. The screen corners are in the demo config
 // (photo scene "screen.quad") so the screenshot can be mapped onto it.
 export const DEMO_DESK_QUAD: Pt[] = [
-  [520, 300],
-  [1150, 290],
-  [1140, 740],
-  [505, 735],
+  [432, 186],
+  [1168, 178],
+  [1176, 698],
+  [424, 704],
 ];
 export const DemoDesk: React.FC = () => {
   const bezel: Pt[] = [
-    [494, 272],
-    [1178, 262],
-    [1167, 768],
-    [478, 764],
+    [410, 164],
+    [1190, 154],
+    [1200, 720],
+    [400, 728],
   ];
   const poly = (pts: Pt[]) => pts.map((p) => p.join(",")).join(" ");
   return (
-    <AbsoluteFill style={{ background: "linear-gradient(180deg, #e9dccb 0%, #d9c7b1 62%, #7a5a43 62%, #5e4332 100%)" }}>
-      <div style={{ position: "absolute", left: 90, top: 120, width: 260, height: 420, borderRadius: 16, background: "#c9b59c" }} />
-      <div style={{ position: "absolute", left: 1290, top: 90, width: 200, height: 200, borderRadius: "50%", background: "#f5e6c8", opacity: 0.8 }} />
-      <div style={{ position: "absolute", left: 1330, top: 470, width: 150, height: 200, borderRadius: "50% 50% 12px 12px", background: "#5d8a4a" }} />
-      <div style={{ position: "absolute", left: 1370, top: 640, width: 70, height: 120, borderRadius: 10, background: "#8a6a50" }} />
+    <AbsoluteFill style={{ background: "linear-gradient(180deg, #ece8f4 0%, #ddd6ea 64%, #8a6a52 64%, #6b4e3a 100%)" }}>
+      <div style={{ position: "absolute", left: 80, top: 110, width: 190, height: 250, borderRadius: 10, background: "#cfc7e0" }} />
+      <div style={{ position: "absolute", left: 1330, top: 90, width: 190, height: 190, borderRadius: "50%", background: "#f6efe0", opacity: 0.85 }} />
       <svg width={1600} height={1067} style={{ position: "absolute", inset: 0 }}>
-        <polygon points={poly(bezel)} fill="#1b1d22" />
-        <polygon points={poly(DEMO_DESK_QUAD)} fill="#dfe6f0" />
-        <polygon points="700,768 960,766 1000,840 660,842" fill="#2a2c31" />
+        <ellipse cx={800} cy={860} rx={620} ry={46} fill="rgba(0,0,0,0.22)" />
+        <polygon points={poly(bezel)} fill="#1c1b24" />
+        <polygon points={poly(DEMO_DESK_QUAD)} fill="#e7e4f3" />
+        <polygon points="330,738 1268,728 1370,862 236,876" fill="#c9c7d4" />
+        <polygon points="330,738 1268,728 1272,742 326,752" fill="#a9a7b6" />
+        <polygon points="640,806 960,802 976,846 626,850" fill="#b3b1c1" />
       </svg>
+      {/* mug */}
+      <div style={{ position: "absolute", left: 1330, top: 700, width: 96, height: 104, borderRadius: "8px 8px 22px 22px", background: "#ff7a59" }} />
+      <div style={{ position: "absolute", left: 1416, top: 726, width: 36, height: 50, borderRadius: "0 24px 24px 0", border: "10px solid #ff7a59", borderLeft: "none", boxSizing: "border-box" }} />
+      {/* plant */}
+      <div style={{ position: "absolute", left: 130, top: 590, width: 150, height: 170, borderRadius: "50% 50% 14px 14px", background: "#5d9a6e" }} />
+      <div style={{ position: "absolute", left: 160, top: 730, width: 90, height: 100, borderRadius: 12, background: "#b98a66" }} />
+      {/* notebook */}
+      <div style={{ position: "absolute", left: 1210, top: 850, width: 230, height: 130, borderRadius: 8, background: "#f4efe4", transform: "rotate(-6deg)" }} />
       <div
         style={{
           position: "absolute",
@@ -306,34 +291,95 @@ export const DemoDesk: React.FC = () => {
           height: 900,
           transformOrigin: "0 0",
           transform: quadMatrix3d(1280, 900, DEMO_DESK_QUAD),
-          background: "#f3f6fb",
+          background: "#f5f4fb",
         }}
       >
-        <div style={{ height: 80, background: "#fff", borderBottom: "1px solid #d8dee9" }} />
-        <div style={{ position: "absolute", left: 80, top: 120, width: 1120, height: 740, background: "#fff", borderRadius: 12 }} />
+        <div style={{ height: 80, background: "#fff", borderBottom: "1px solid #e1def0" }} />
+        <div style={{ position: "absolute", left: 80, top: 120, width: 1120, height: 740, background: "#fff", borderRadius: 14 }} />
       </div>
     </AbsoluteFill>
   );
 };
 
+// Logo: a purely graphic mark (no lettering), like a real logo file would be.
 export const DemoLogo: React.FC = () => (
   <AbsoluteFill
     style={{
-      background: "#1d2b53",
+      background: "#ffffff",
       borderRadius: 80,
       display: "flex",
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "center",
-      gap: 14,
-      fontFamily: '"Segoe UI", Arial, sans-serif',
-      color: "#fff",
-      fontSize: 60,
-      fontWeight: 800,
-      letterSpacing: 4,
+      gap: 26,
     }}
   >
-    ACME
-    <span style={{ width: 26, height: 26, borderRadius: "50%", background: "#ffb703", display: "inline-block" }} />
+    <div style={{ width: 92, height: 92, borderRadius: 26, background: "#5b45e0", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <Check size={60} />
+    </div>
+    <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+      <div style={{ width: 210, height: 18, borderRadius: 9, background: "#5b45e0" }} />
+      <div style={{ width: 150, height: 18, borderRadius: 9, background: "#ff7a59" }} />
+      <div style={{ width: 90, height: 18, borderRadius: 9, background: "#c9c2ee" }} />
+    </div>
   </AbsoluteFill>
 );
+
+// Phone screenshot (390x844 CSS px, exported at 2x = 780x1688) for the
+// mobile example (examples/mobile.config.json, scene option device: "phone").
+//   "Organize" button: x 130–650, y 1500–1580 (click at 390, 1540)
+export const DemoPhoneScreen: React.FC<{ state: "before" | "after" }> = ({ state }) => {
+  const after = state === "after";
+  const rows = after ? COLUMNS[0].cards : INBOX.slice(0, 6).map((t) => ({ title: t.title, due: t.due, priority: undefined as Priority | undefined, from: t.from }));
+  return (
+    <AbsoluteFill style={{ background: UI.bg, fontFamily: UI.font, color: UI.text }}>
+      <div style={{ width: 390, height: 844, transform: "scale(2)", transformOrigin: "0 0", position: "relative" }}>
+        <div style={{ position: "absolute", left: 24, top: 74 }}>
+          <div style={{ fontSize: 30, fontWeight: 700 }}>{after ? "Today" : "All tasks"}</div>
+          <div style={{ fontSize: 15, color: UI.muted, marginTop: 4 }}>{after ? "3 tasks · sorted by priority" : "7 tasks · from 5 apps"}</div>
+        </div>
+        <div style={{ position: "absolute", left: 20, right: 20, top: 150 }}>
+          {rows.map((r) => (
+            <div key={r.title} style={{ background: "#fff", border: `1px solid ${UI.border}`, borderRadius: 14, padding: "14px 16px", marginBottom: 12 }}>
+              <div style={{ fontSize: 17, fontWeight: 600, lineHeight: 1.25 }}>{r.title}</div>
+              <div style={{ marginTop: 10, display: "flex", alignItems: "center", gap: 10 }}>
+                {"priority" in r && r.priority ? (
+                  <Chip label={r.priority} color={PRIORITY_COLOR[r.priority]} solid />
+                ) : (
+                  <Chip label={(r as { from: string }).from} color={UI.muted} />
+                )}
+                <span style={{ fontSize: 14, color: UI.muted }}>{r.due}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div
+          style={{
+            position: "absolute",
+            left: 65,
+            width: 260,
+            top: 750,
+            height: 40,
+            borderRadius: 12,
+            background: after ? UI.green : UI.brand,
+            color: "#fff",
+            fontSize: 17,
+            fontWeight: 700,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 8,
+          }}
+        >
+          {after ? (
+            <>
+              <Check size={18} /> Organized
+            </>
+          ) : (
+            "Organize my week"
+          )}
+        </div>
+      </div>
+    </AbsoluteFill>
+  );
+};

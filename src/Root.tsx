@@ -3,7 +3,7 @@ import { Video } from "./Video";
 import { CONFIG, FPS } from "./config";
 import { H, W } from "./layout";
 import { TOTAL } from "./timeline";
-import { DemoDesk, DemoLogo, DemoScreen } from "./demo/DemoAssets";
+import { DemoDesk, DemoLogo, DemoPhoneScreen, DemoScreen } from "./demo/DemoAssets";
 
 export const RemotionRoot: React.FC = () => (
   <>
@@ -18,7 +18,16 @@ export const RemotionRoot: React.FC = () => (
       fps={30}
       width={1280}
       height={900}
-      defaultProps={{ state: "empty" as const }}
+      defaultProps={{ state: "before" as const }}
+    />
+    <Composition
+      id="DemoPhoneScreen"
+      component={DemoPhoneScreen}
+      durationInFrames={1}
+      fps={30}
+      width={780}
+      height={1688}
+      defaultProps={{ state: "before" as const }}
     />
     <Composition id="DemoDesk" component={DemoDesk} durationInFrames={1} fps={30} width={1600} height={1067} />
     <Composition id="DemoLogo" component={DemoLogo} durationInFrames={1} fps={30} width={520} height={160} />
