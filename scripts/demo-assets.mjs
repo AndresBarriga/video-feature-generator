@@ -8,9 +8,9 @@ import { fileURLToPath } from "node:url";
 const root = fileURLToPath(new URL("..", import.meta.url));
 const serveUrl = await bundle({ entryPoint: path.join(root, "src/index.ts"), publicDir: path.join(root, "assets") });
 const jobs = [
-  ["DemoScreen", { state: "empty" }, "assets/screens/demo-01-empty.png"],
-  ["DemoScreen", { state: "scan" }, "assets/screens/demo-02-scan.png"],
-  ["DemoScreen", { state: "filled" }, "assets/screens/demo-03-filled.png"],
+  ["DemoScreen", { state: "before" }, "assets/screens/demo-01-before.png"],
+  ["DemoScreen", { state: "dialog" }, "assets/screens/demo-02-dialog.png"],
+  ["DemoScreen", { state: "after" }, "assets/screens/demo-03-after.png"],
   ["DemoDesk", {}, "assets/photos/demo-desk.png"],
   ["DemoLogo", {}, "assets/brand/demo-logo.png"],
 ];

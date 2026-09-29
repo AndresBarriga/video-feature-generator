@@ -1,7 +1,7 @@
 // Start a new video: archives the current video.config.json (and its script,
 // if any) into videos/<old-slug>/ and writes a fresh starter config.
 //   node scripts/new-video.mjs "My feature"      -> blank starter
-//   node scripts/new-video.mjs --demo            -> restore the Acme demo
+//   node scripts/new-video.mjs --demo            -> restore the Taskly demo
 import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -27,7 +27,7 @@ if (existsSync(cfgPath)) {
 const arg = process.argv.slice(2).join(" ").trim();
 if (arg === "--demo") {
   copyFileSync(path.join(root, "examples", "demo.config.json"), cfgPath);
-  console.log("Restored the Acme Stays demo.");
+  console.log("Restored the Taskly demo.");
 } else {
   const demo = JSON.parse(readFileSync(path.join(root, "examples", "demo.config.json"), "utf8"));
   const starter = {
@@ -36,8 +36,8 @@ if (arg === "--demo") {
     fps: 30,
     brand: { ...demo.brand, logo: undefined },
     scenes: [
-      { type: "screen", image: "screens/demo-01-empty.png", seconds: 3, caption: "Replace me with **your** first caption" },
-      { type: "end", seconds: 3, headline: arg || "Your feature", cta: "Book a demo" },
+      { type: "screen", image: "screens/demo-01-before.png", seconds: 3, caption: "Replace me with **your** first caption" },
+      { type: "end", seconds: 3, headline: arg || "Your feature", cta: "Try it free" },
     ],
   };
   writeFileSync(cfgPath, JSON.stringify(starter, null, 2) + "\n");

@@ -18,7 +18,7 @@ export const RemotionRoot: React.FC = () => (
       fps={30}
       width={1280}
       height={900}
-      defaultProps={{ state: "empty" as const }}
+      defaultProps={{ state: "before" as const }}
     />
     <Composition id="DemoDesk" component={DemoDesk} durationInFrames={1} fps={30} width={1600} height={1067} />
     <Composition id="DemoLogo" component={DemoLogo} durationInFrames={1} fps={30} width={520} height={160} />

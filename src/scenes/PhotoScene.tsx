@@ -7,7 +7,7 @@ import { screenPlacement } from "./ScreenScene";
 
 const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 
-// A real-world photo (reception desk, office, shop…) with a slow push-in.
+// A real-world photo (desk, office, shop, on-the-go…) with a slow push-in.
 // If the photo shows a device, `screen.quad` maps your screenshot onto that
 // screen in perspective. With `diveIntoNext`, the camera dives into the device
 // and the screen flattens into EXACTLY the first frame of the next screen

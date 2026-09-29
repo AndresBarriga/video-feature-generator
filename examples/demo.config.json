@@ -1,12 +1,12 @@
 {
-  "title": "Acme Stays — Express Check-in (demo)",
+  "title": "Taskly — Organize my week (demo)",
   "format": "portrait",
   "fps": 30,
   "brand": {
-    "primary": "#1d2b53",
-    "accent": "#ffb703",
-    "success": "#8ac926",
-    "background": "#f3f6fb",
+    "primary": "#2b1d5c",
+    "accent": "#ff7a59",
+    "success": "#34c38f",
+    "background": "#f5f4fb",
     "font": "Inter",
     "logo": "brand/demo-logo.png"
   },
@@ -15,46 +15,46 @@
       "type": "photo",
       "image": "photos/demo-desk.png",
       "seconds": 2.8,
-      "caption": "Still typing guest details\n**by hand** at check-in?",
+      "caption": "Tasks scattered across\n**five apps**?",
       "pushIn": 1.08,
       "screen": {
-        "quad": [[520, 300], [1150, 290], [1140, 740], [505, 735]]
+        "quad": [[432, 186], [1168, 178], [1176, 698], [424, 704]]
       },
       "diveIntoNext": true
     },
     {
       "type": "screen",
-      "image": "screens/demo-01-empty.png",
+      "image": "screens/demo-01-before.png",
       "seconds": 2.6,
-      "caption": "**Scan** the guest's ID.",
-      "clicks": [{ "x": 400, "y": 268, "at": 1.8 }],
-      "highlights": [{ "x": 112, "y": 240, "w": 1056, "h": 56, "from": 0.5, "to": 1.9 }]
+      "caption": "**Organize** your week\nin one click.",
+      "clicks": [{ "x": 1038, "y": 170, "at": 1.8 }],
+      "highlights": [{ "x": 908, "y": 144, "w": 260, "h": 52, "from": 0.5, "to": 1.9 }]
     },
     {
       "type": "screen",
-      "image": "screens/demo-02-scan.png",
+      "image": "screens/demo-02-dialog.png",
       "seconds": 2.4,
-      "caption": "**Scan** the guest's ID.",
+      "caption": "**Organize** your week\nin one click.",
       "transitionIn": "slide-up"
     },
     {
       "type": "screen",
-      "image": "screens/demo-03-filled.png",
+      "image": "screens/demo-03-after.png",
       "seconds": 3.2,
-      "caption": "The profile\n**fills itself.**",
-      "sub": "No typing. No typos.",
+      "caption": "Your week,\n**sorted itself.**",
+      "sub": "Priorities and due dates, done.",
       "transitionIn": "slide-left",
       "zoomTo": 1.1,
       "focus": { "x": 640, "y": 470, "width": 1280 },
-      "highlights": [{ "x": 112, "y": 430, "w": 1056, "h": 250, "from": 0.4 }]
+      "highlights": [{ "x": 112, "y": 240, "w": 1056, "h": 500, "from": 0.4 }]
     },
     {
       "type": "end",
       "seconds": 3.4,
-      "headline": "Express Check-in",
-      "tagline": "for Acme Stays",
-      "subline": "No extra hardware.\nJust the tablet camera.",
-      "cta": "Book a demo",
+      "headline": "Organize my week",
+      "tagline": "with Taskly",
+      "subline": "One click.\nEvery task in its place.",
+      "cta": "Try it free",
       "backgroundImage": "photos/demo-desk.png"
     }
   ]
