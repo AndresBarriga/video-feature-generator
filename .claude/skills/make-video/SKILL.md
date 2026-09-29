@@ -21,7 +21,7 @@ before writing the script). Script patterns: `references/script-patterns.md`.
 2. **Show, don't tell.** After any change, render stills and SHOW them (read the
    PNGs and summarize what's in them), don't just describe what you changed.
 3. **One feature per video, ~12–20 s.** Propose splitting if they list many.
-4. **Fictional data only** in screenshots — never real customer/guest data.
+4. **Fictional data only** in screenshots — never real customer or user data.
    Remind them before they take screenshots.
 5. **Never recreate a logo with text.** Use their logo file; if missing, leave
    it out and say so.
@@ -38,15 +38,15 @@ before writing the script). Script patterns: `references/script-patterns.md`.
 ## Step 1 — Interview (short, friendly; use AskUserQuestion with options)
 Ask only what you can't infer. Group into 1–2 rounds:
 - **What feature** and **what problem it solves** (one sentence each).
-- **Who watches** (e.g. hotel managers, IT buyers, existing customers).
+- **Who watches** (e.g. team leads, IT buyers, existing customers).
 - **Where it's posted** → format: LinkedIn/Instagram feed = `portrait` (4:5,
   default); `square`; website/YouTube/slides = `landscape`.
-- **Call to action** for the end card ("Book a demo", "Available now", URL?).
+- **Call to action** for the end card ("Try it free", "Book a demo", "Available now", URL?).
 - **Brand**: logo file? colors? font? A brand-book PDF or website is fine —
   extract colors/fonts/logo from it (see "Brand kit" below).
 - **A real-world photo** for the opening (optional but recommended): a
-  photo of the product in use (reception desk, office, shop) — ideally with the
-  device screen visible. AI-generated is fine if they have the rights.
+  photo of the product in use (a laptop on a desk, a phone in hand, a shop
+  counter, a workshop) — ideally with the device screen visible. AI-generated is fine if they have the rights.
 
 ## Step 2 — Brand kit
 - Colors → `brand.primary` (band + end card, usually the darkest brand color),
@@ -72,8 +72,8 @@ change?" Iterate until they say OK. Write the agreed script to
 
 ## Step 4 — Screenshot checklist
 Tell them EXACTLY what to capture, per beat, as a numbered list, e.g.:
-"1. The guest profile BEFORE scanning (fields empty). 2. The scan screen with a
-document in the frame. 3. The profile AFTER (fields filled)." Tips to give:
+"1. The list BEFORE (messy, nothing set up yet). 2. The dialog or step in
+progress. 3. The result AFTER (everything filled in)." Tips to give:
 - Same window size for all screenshots of the same screen (states must line up).
 - Fictional demo data. Close notifications. Browser zoom 100–125%.
 - Full window screenshots are fine — you'll crop.
@@ -94,6 +94,9 @@ wrong (wrong state, real data visible, cropped too tight) before building.
      = readable on a phone). Add `clicks` where the user would click (cursor
      leads every click), `highlights` for what to notice, `states` for
      before/after of the same screen, `zoomTo` 1.05–1.12 for slow push-ins.
+   - Mobile app (portrait screenshots)? Add `"device": "phone"` to the
+     `screen` scene: it draws a phone frame around the screenshot (see
+     `examples/mobile.config.json`). Don't use `focus` to crop the phone frame away.
    - `transitionIn`: `cut` by default; `slide-up` when a dialog/modal opens;
      `slide-left` for "next step". Never cross-fades.
    - `end` scene last: headline, tagline, subline, cta, optional url,

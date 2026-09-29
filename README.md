@@ -9,7 +9,7 @@ presentation.
 
 ![Example frames](docs/example-frames.png)
 
-▶ [Watch the demo video](docs/demo-video.mp4) (13 s, fictional hotel app)
+▶ [Watch the demo video](docs/demo-video.mp4) (14 s, fictional task-management app)
 
 It runs on **your own Claude subscription** (Claude Code in the Claude desktop
 app) — no API keys, no per-video fees. Rendering happens on your computer.
@@ -43,7 +43,7 @@ A typical video takes **30–60 minutes** the first time (mostly script and
 screenshots), less after that.
 
 > **Try the demo first:** type *"Render the demo video"* — you'll get a sample
-> video for a fictional hotel app in a couple of minutes.
+> video for a fictional task-management app in a couple of minutes.
 
 ## What the videos look like
 

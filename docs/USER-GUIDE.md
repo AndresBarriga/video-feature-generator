@@ -11,7 +11,7 @@ Have ready (Claude will ask for them, but it goes faster if you have them):
 - **Your logo** (PNG with transparent background or SVG exported to PNG) and
   **brand colors** — or your brand book PDF / website; Claude extracts them.
 - **One real-world photo** of the product in use, ideally with the screen of the
-  device visible (a tablet on a reception desk, a laptop in an office…).
+  device visible (a laptop on a desk, a phone in someone's hand, a tablet at a shop counter…).
   Optional, but the opening looks much better with it.
 
 ## 2. The conversation, step by step
@@ -33,15 +33,16 @@ Have ready (Claude will ask for them, but it goes faster if you have them):
 - Close notifications, chat pop-ups, cookie banners.
 - Browser zoom **100–125 %**; full window is fine (Claude crops).
 - Capture **each state**: before, during (e.g. dialog open), after.
+- **Mobile app?** Take phone screenshots and say so — Claude puts them in a phone frame.
 - Windows: `Win + Shift + S`. Mac: `Cmd + Shift + 4`, then `Space` to capture a window.
 - Attach them in the chat, or drop them into `assets/screens/` (photos into
   `assets/photos/`, logo into `assets/brand/`).
 
 ## 4. Asking for changes (examples that work)
 
-- "Make the first caption shorter." / "Change 'fills itself' to 'completes itself'."
+- "Make the first caption shorter." / "Change 'sorted itself' to 'organizes itself'."
 - "Hold the result screen one second longer."
-- "Zoom in more on the form fields." / "The cursor should click the blue button."
+- "Zoom in more on the results." / "The cursor should click the purple button."
 - "Use the square format too." / "Make a 10-second version."
 - "The start feels too fast." / "Remove the URL from the end card."
 
@@ -52,7 +53,7 @@ Be specific about *what* feels wrong; Claude handles the *how*.
 All texts live in `video.config.json` (open it with Notepad / TextEdit):
 
 - `"caption"`: the text on top. Put `**` around words to highlight them
-  (`"**Scan** the guest's ID."`). `\n` starts a new line.
+  (`"**Organize** your week."`). `\n` starts a new line.
 - `"sub"`: the smaller line under a caption.
 - `"seconds"`: how long a scene lasts.
 - End card: `"headline"`, `"tagline"`, `"subline"`, `"cta"`, `"url"`.

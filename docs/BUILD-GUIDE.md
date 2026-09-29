@@ -74,7 +74,7 @@ Remotion (React → headless Chrome frames → FFmpeg) ─> out/video.mp4
 ## Custom scenes (when config isn't enough)
 
 Some videos need an animated UI that screenshots can't show (fields filling one
-by one, a camera scanning a document). Rebuilding the UI in React looks best but
+by one, a chart drawing itself). Rebuilding the UI in React looks best but
 costs far more effort/usage. Recipe:
 
 1. Create `src/scenes/custom/MyScene.tsx`. Lay it out in a fixed "UI space"

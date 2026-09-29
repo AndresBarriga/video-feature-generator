@@ -4,14 +4,14 @@ Learned the hard way over many review rounds on a real product video. Apply
 them by default; break one only if the user asks.
 
 ## Story & pacing
-- **Hook first, product second.** Open on the *problem* ("Still typing guest
-  details by hand?") over a real-world photo with a slow push-in (~2–3 s), then
+- **Hook first, product second.** Open on the *problem* ("Tasks scattered
+  across five apps?") over a real-world photo with a slow push-in (~2–3 s), then
   dive into the device screen. Starting straight on the UI with a fast zoom felt
   rushed; the slow start was clearly preferred.
 - **~12–20 s total** for social. Give each caption time to be read:
   ~0.4 s per word, minimum ~1.5 s per caption. Captions with a sub-line need more.
 - **One idea per beat.** If a beat needs two captions, it's two beats.
-- **The key moment gets the most time** (e.g. the scan itself), not the setup.
+- **The key moment gets the most time** (e.g. the moment the result appears), not the setup.
 - **End card ~3 s**: headline, one supporting line, one CTA. Nothing else.
 
 ## Captions
@@ -23,7 +23,7 @@ them by default; break one only if the user asks.
 - ≤ ~7 words per line, max 2 lines, plus an optional short sub-line.
 - Be precise about claims. Example from production: "Only the phone number left
   to type" was wrong — mandatory fields vary per customer — so it became
-  "Missing a **required field**? The app asks for it." + "Each property decides
+  "Missing a **required field**? The app asks for it." + "Each workspace decides
   what's mandatory." Ask the user about exceptions before stating absolutes.
 
 ## Motion
@@ -41,10 +41,10 @@ them by default; break one only if the user asks.
   frame is unreadable.
 - Fictional data only. Keep it consistent across all screenshots (same person,
   same numbers, same date format as the app).
-- Dates/names in the app's real format (e.g. "Mr. Novak Adam" if that's how
-  the app shows names).
-- If a document/object is shown, make it look like the real thing (a passport is
-  a booklet page, not an ID card) — people notice.
+- Dates/names/currencies in the app's real format (e.g. "Oct 30" vs "30/10/2026",
+  "Dana R." vs "Dana Rivera" — whatever the app actually shows).
+- If a document/object is shown, make it look like the real thing (an invoice
+  looks like an invoice, not a generic form) — people notice.
 
 ## Brand
 - Brand book = source of truth for the video chrome (colors, font, logo,
