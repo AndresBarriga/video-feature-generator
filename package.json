@@ -1,0 +1,26 @@
+{
+  "name": "feature-video-studio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Turn screenshots of your app into a short, polished feature video — guided by Claude, rendered with Remotion.",
+  "scripts": {
+    "preview": "node scripts/prepare-assets.mjs && remotion studio src/index.ts",
+    "check": "node scripts/prepare-assets.mjs && node scripts/check-config.mjs && tsc --noEmit -p .",
+    "stills": "node scripts/prepare-assets.mjs && node scripts/check-config.mjs && node scripts/stills.mjs",
+    "render": "node scripts/prepare-assets.mjs && node scripts/check-config.mjs && remotion render src/index.ts Video out/video.mp4",
+    "demo-assets": "node scripts/demo-assets.mjs"
+  },
+  "dependencies": {
+    "@remotion/bundler": "4.0.529",
+    "@remotion/cli": "4.0.529",
+    "@remotion/renderer": "4.0.529",
+    "@remotion/transitions": "4.0.529",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "remotion": "4.0.529"
+  },
+  "devDependencies": {
+    "@types/react": "18.3.3",
+    "typescript": "5.5.3"
+  }
+}

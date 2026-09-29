@@ -1,0 +1,22 @@
+{
+  "brand/demo-logo.png": {
+    "width": 520,
+    "height": 160
+  },
+  "photos/demo-desk.png": {
+    "width": 1600,
+    "height": 1067
+  },
+  "screens/demo-01-empty.png": {
+    "width": 1280,
+    "height": 900
+  },
+  "screens/demo-02-scan.png": {
+    "width": 1280,
+    "height": 900
+  },
+  "screens/demo-03-filled.png": {
+    "width": 1280,
+    "height": 900
+  }
+}

@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Point picker</title>
+<style>
+  :root { --bg: #f5f6f8; --fg: #1f2a3d; --muted: #6b778c; --accent: #2563eb; }
+  body { margin: 0; font: 15px/1.5 system-ui, "Segoe UI", sans-serif; background: var(--bg); color: var(--fg); }
+  header { padding: 16px 20px; background: #fff; border-bottom: 1px solid #dde2ea; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  h1 { font-size: 18px; margin: 0; }
+  main { padding: 16px 20px; }
+  #drop { border: 2px dashed #b9c2d0; border-radius: 12px; padding: 40px; text-align: center; color: var(--muted); background: #fff; }
+  #wrap { position: relative; display: inline-block; max-width: 100%; margin-top: 12px; }
+  #img { max-width: 100%; display: block; cursor: crosshair; border-radius: 6px; }
+  .dot { position: absolute; width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 50%; background: var(--accent); border: 2px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,.4); pointer-events: none; }
+  .dot span { position: absolute; left: 16px; top: -4px; background: var(--accent); color: #fff; font-size: 12px; padding: 0 5px; border-radius: 4px; white-space: nowrap; }
+  textarea { width: 100%; height: 90px; font: 13px/1.4 Consolas, monospace; margin-top: 10px; }
+  button { font: inherit; padding: 6px 12px; border-radius: 6px; border: 1px solid #b9c2d0; background: #fff; cursor: pointer; }
+  .hint { color: var(--muted); }
+</style>
+</head>
+<body>
+<header>
+  <h1>Point picker</h1>
+  <span class="hint">Drop a screenshot or photo, click points. Coordinates are in original image pixels.</span>
+  <button id="clear">Clear points</button>
+  <button id="copy">Copy</button>
+</header>
+<main>
+  <div id="drop">Drop an image here (or click to choose)<input id="file" type="file" accept="image/*" hidden /></div>
+  <div id="wrap" hidden><img id="img" alt="" /></div>
+  <p class="hint">For a device screen (photo scene "screen.quad"), click the 4 corners in this order: top-left, top-right, bottom-right, bottom-left. For a click, click once on the button.</p>
+  <textarea id="out" readonly></textarea>
+</main>
+<script>
+  const drop = document.getElementById("drop"), file = document.getElementById("file");
+  const wrap = document.getElementById("wrap"), img = document.getElementById("img"), out = document.getElementById("out");
+  let pts = [];
+  const load = (f) => { if (!f) return; img.src = URL.createObjectURL(f); wrap.hidden = false; pts = []; render(); };
+  drop.onclick = () => file.click();
+  file.onchange = () => load(file.files[0]);
+  drop.ondragover = (e) => { e.preventDefault(); };
+  drop.ondrop = (e) => { e.preventDefault(); load(e.dataTransfer.files[0]); };
+  img.onclick = (e) => {
+    const r = img.getBoundingClientRect();
+    const x = Math.round(((e.clientX - r.left) / r.width) * img.naturalWidth);
+    const y = Math.round(((e.clientY - r.top) / r.height) * img.naturalHeight);
+    pts.push([x, y]); render();
+  };
+  const render = () => {
+    wrap.querySelectorAll(".dot").forEach((d) => d.remove());
+    pts.forEach(([x, y], i) => {
+      const d = document.createElement("div"); d.className = "dot";
+      d.style.left = (x / img.naturalWidth) * 100 + "%"; d.style.top = (y / img.naturalHeight) * 100 + "%";
+      d.innerHTML = "<span>" + (i + 1) + ": " + x + ", " + y + "</span>"; wrap.appendChild(d);
+    });
+    if (pts.length === 1) out.value = '{ "x": ' + pts[0][0] + ', "y": ' + pts[0][1] + ', "at": 1.5 }';
+    else if (pts.length === 4) out.value = '"quad": ' + JSON.stringify(pts);
+    else out.value = JSON.stringify(pts);
+  };
+  document.getElementById("clear").onclick = () => { pts = []; render(); };
+  document.getElementById("copy").onclick = () => navigator.clipboard.writeText(out.value);
+</script>
+</body>
+</html>
