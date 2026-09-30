@@ -138,7 +138,12 @@ Coordinates are always in **pixels of the original image**. Get sizes from
 1. Run `npm run place` in the background. It serves the placement page on
    localhost (prints the address, normally http://localhost:4173) and stays
    running until the user presses **Finish**.
-2. Open that address in the built-in browser pane (or give it to the user).
+2. Open that address so the user actually SEES it: in the Claude desktop app use
+   the browser tool `preview_start` with `url` (it opens the Browser pane;
+   `navigate` alone can leave the pane hidden — check with `tabs_context`, which
+   says whether it is displayed). If it still isn't visible, or the pane is too
+   narrow to click precisely, give the user the address to open in their own
+   browser (e.g. http://localhost:4173/?scene=2 — `?scene=N` opens scene N).
 3. Tell them, per scene, what to click: the button the cursor should press, a
    box around what to notice, the exact spot a label points at, a box over a
    field for typed text, the crop, and the 4 corners of the device screen in
