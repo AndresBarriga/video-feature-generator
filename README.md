@@ -9,6 +9,7 @@ presentation.
 
 ![Example frames](docs/example-frames.png)
 
+▶ [How it works: from a GitHub link to a finished video](docs/feature-video-studio-intro.mp4) (18 s, 4:5 for LinkedIn)  
 ▶ [Watch the demo video](docs/demo-video.mp4) (14 s, fictional task-management app)
 
 It runs on **your own Claude subscription** (Claude Code in the Claude desktop
