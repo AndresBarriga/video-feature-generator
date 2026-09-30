@@ -7,10 +7,17 @@ with you, tells you exactly which screenshots to take, builds the video, shows
 you test frames, and delivers an MP4 ready for LinkedIn, your website or a
 presentation.
 
-![Example frames](docs/example-frames.png)
+**Example 1 — a demo for a fictional task app:**
 
-▶ [How it works: from a GitHub link to a finished video](docs/feature-video-studio-intro.mp4) (18 s, 4:5 for LinkedIn)  
-▶ [Watch the demo video](docs/demo-video.mp4) (14 s, fictional task-management app)
+![Example frames: Taskly demo](docs/example-frames.png)
+
+▶ [Watch the demo video](docs/demo-video.mp4) (14 s, 4:5)
+
+**Example 2 — this repo's own intro, made with the tool itself:**
+
+![Example frames: the intro video](docs/example-frames-intro.png)
+
+▶ [How it works: from a GitHub link to a finished video](docs/feature-video-studio-intro.mp4) (18 s, 4:5 for LinkedIn)
 
 It runs on **your own Claude subscription** (Claude Code in the Claude desktop
 app) — no API keys, no per-video fees. Rendering happens on your computer.
