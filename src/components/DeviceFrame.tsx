@@ -12,9 +12,31 @@ const SHADOW = "0 18px 50px rgba(20, 30, 50, 0.28)";
 
 type P = { device: Device; left: number; top: number; w: number; h: number; opacity?: number; url?: string };
 
-/** Share of the content area the screenshot may take, leaving room for the frame. */
-export const deviceMargin = (d?: Device) =>
-  d === "phone" ? 0.84 : d === "browser" ? 0.88 : d === "laptop" ? 0.82 : d === "monitor" ? 0.78 : d ? 0.88 : 0.94;
+/** Space the frame adds around the screenshot, in screenshot pixels (so layout can center the whole device). */
+export const deviceExtent = (d: Device, w: number, h: number) => {
+  const short = Math.min(w, h);
+  switch (d) {
+    case "phone": {
+      const b = w * 0.035;
+      return { top: b, bottom: b, left: b, right: b };
+    }
+    case "tablet-portrait":
+    case "tablet-landscape": {
+      const b = short * 0.045;
+      return { top: b, bottom: b, left: b, right: b };
+    }
+    case "browser":
+      return { top: w * 0.052, bottom: 0, left: 0, right: 0 };
+    case "laptop": {
+      const b = w * 0.016;
+      return { top: b, bottom: b + w * 0.03, left: w * 0.07, right: w * 0.07 };
+    }
+    case "monitor": {
+      const b = w * 0.014;
+      return { top: b, bottom: b + w * 0.03 + w * 0.09 + w * 0.016, left: b, right: b };
+    }
+  }
+};
 
 /** CSS border-radius of the screenshot itself, so it sits inside the frame's screen. */
 export const imageRadius = (d: Device | undefined, w: number, h: number, fallback: number): number | string => {

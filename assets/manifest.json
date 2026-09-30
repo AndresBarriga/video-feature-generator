@@ -30,5 +30,29 @@
   "screens/demo-phone-before.png": {
     "width": 780,
     "height": 1688
+  },
+  "screens/studio-01-chat.png": {
+    "width": 1180,
+    "height": 924
+  },
+  "screens/studio-02-place.png": {
+    "width": 2000,
+    "height": 1093
+  },
+  "screens/studio-03-result.png": {
+    "width": 1920,
+    "height": 1080
+  },
+  "screens/studio-04-github.png": {
+    "width": 2000,
+    "height": 1250
+  },
+  "screens/studio-05-install.png": {
+    "width": 840,
+    "height": 330
+  },
+  "screens/studio-06-tool.png": {
+    "width": 1888,
+    "height": 1096
   }
 }

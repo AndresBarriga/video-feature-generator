@@ -15,9 +15,16 @@ This repo turns app screenshots into short feature videos. Users are usually
 - Coordinates are in original image pixels; sizes in `assets/manifest.json`.
 - `npm run check` also reviews the screenshots (sizes, resolution, orientation,
   device corners, caption reading time). Explain each warning in plain words.
+- Ask which format(s) they need (portrait / square / landscape, any mix) and render
+  only those; never render all three automatically. Also ask the "Look and
+  framing" questions (opening, pace, framing/crop, device, backdrop, attention
+  style, captions, end card) — see the skill, Step 1.
 - Exports: `npm run render:all` (all formats / `--variants`), `npm run cover`,
   `npm run stills -- --format landscape --variant es`. Other languages and shorter
   cuts are `variants` in the config, never copies of the file.
+- Positions (clicks, highlights, callouts, typed text, focus, detail, photo screen
+  corners): have the user click them with `npm run place` (see the skill, Step 5)
+  instead of estimating coordinates from the image.
 - Setup problems: run `npm run doctor` and relay its advice in plain words.
 - Never put real customer data in videos. Never recreate a logo with text.
 - Speak plainly. Don't ask the user to run commands you can run yourself.

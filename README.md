@@ -54,11 +54,12 @@ screenshots), less after that.
 - Your screenshots in a **browser, laptop, monitor, phone or iPad frame**, on a
   designed backdrop; text can be typed into fields; captions appear word by word.
 - Your logo, colors and font. Formats: **portrait 4:5** (LinkedIn/Instagram),
-  **square 1:1**, **landscape 16:9** (website, YouTube, slides) — all three
-  with one command.
+  **square 1:1**, **landscape 16:9** (website, YouTube, slides) — Claude asks
+  which ones you need and renders only those.
 - Ready-made structures: **launch, quick tutorial, old vs new way, before/after,
   mobile app**. Other languages and shorter cuts as variants of the same video,
   plus a cover image for each format.
+- You click where things go (cursor, highlights, labels, typed text, the device screen in a photo) on a small page instead of describing positions in words.
 - Claude checks your screenshots before building (same size, big enough, right
   orientation) and `npm run doctor` explains any setup problem in plain words.
 

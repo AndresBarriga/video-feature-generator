@@ -1,0 +1,115 @@
+{
+  "title": "Feature Video Studio",
+  "format": "portrait",
+  "fps": 30,
+  "brand": {
+    "primary": "#10233f",
+    "accent": "#2ec4b6",
+    "success": "#7bd88f",
+    "background": "#f3f6f8",
+    "backdrop": "soft",
+    "font": "Inter"
+  },
+  "cover": {
+    "headline": "Feature Video\n**Studio**",
+    "sub": "Screenshots in. Video out.",
+    "image": "screens/studio-02-place.png",
+    "device": "laptop"
+  },
+  "scenes": [
+    {
+      "type": "screen",
+      "device": "browser",
+      "url": "github.com/AndresBarriga/video-feature-generator",
+      "image": "screens/studio-04-github.png",
+      "seconds": 3.0,
+      "caption": "**Open the repo** on GitHub.",
+      "callouts": [
+        {
+          "x": 1335,
+          "y": 308,
+          "text": "**Copy** the link",
+          "side": "bottom",
+          "from": 0.7
+        }
+      ]
+    },
+    {
+      "type": "screen",
+      "device": "laptop",
+      "image": "screens/studio-05-install.png",
+      "seconds": 3.0,
+      "caption": "**Paste the link** in Claude.",
+      "transitionIn": "slide-left",
+      "zoomTo": 1.16
+    },
+    {
+      "type": "screen",
+      "device": "laptop",
+      "image": "screens/studio-01-chat.png",
+      "seconds": 3.0,
+      "caption": "Answer a few **questions**.",
+      "transitionIn": "slide-left",
+      "detail": {
+        "focus": {
+          "x": 590,
+          "y": 720,
+          "width": 800,
+          "height": 480
+        },
+        "from": 1
+      },
+      "clicks": [
+        {
+          "x": 340,
+          "y": 602,
+          "at": 1.8
+        }
+      ],
+      "highlights": [
+        {
+          "x": 213,
+          "y": 569,
+          "w": 758,
+          "h": 70,
+          "from": 0.5
+        }
+      ]
+    },
+    {
+      "type": "screen",
+      "device": "laptop",
+      "image": "screens/studio-06-tool.png",
+      "seconds": 4.0,
+      "caption": "**Click** where things go,\nright inside Claude.",
+      "transitionIn": "slide-left",
+      "clicks": [
+        {
+          "x": 1500,
+          "y": 615,
+          "at": 1.8
+        }
+      ],
+      "zoomTo": 1.12
+    },
+    {
+      "type": "screen",
+      "device": "laptop",
+      "image": "screens/studio-03-result.png",
+      "seconds": 3.4,
+      "caption": "A **finished video**,\nin every format.",
+      "transitionIn": "slide-left",
+      "zoomTo": 1.06
+    },
+    {
+      "type": "end",
+      "seconds": 3.4,
+      "headline": "Feature Video Studio",
+      "tagline": "Screenshots in. Video out.",
+      "subline": "Made with Remotion and Claude Code.",
+      "cta": "Get it on GitHub",
+      "url": "github.com/AndresBarriga/video-feature-generator",
+      "backgroundImage": "photos/demo-desk.png"
+    }
+  ]
+}

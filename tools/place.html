@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Placement tool</title>
+<style>
+  :root {
+    --bg: #f4f5f8; --card: #fff; --ink: #1d2233; --muted: #6b7288; --line: #dfe2ea;
+    --brand: #5b45e0; --accent: #ff7a59; --ok: #1f9d6b; --warn: #c2410c;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #14161d; --card: #1e212b; --ink: #eceef5; --muted: #9aa1b5; --line: #323648; --brand: #8b79ff; --ok: #3ddc97; --warn: #ff9b6a; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 15px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; background: var(--bg); color: var(--ink); }
+  header { display: flex; align-items: center; gap: 16px; padding: 12px 20px; background: var(--card); border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 5; }
+  header h1 { font-size: 17px; margin: 0; }
+  #status { color: var(--muted); font-size: 13px; margin-left: auto; }
+  #status.ok { color: var(--ok); }
+  button { font: inherit; cursor: pointer; border: 1px solid var(--line); background: var(--card); color: var(--ink); border-radius: 8px; padding: 7px 12px; }
+  button:hover { border-color: var(--brand); }
+  button.primary { background: var(--brand); color: #fff; border-color: var(--brand); font-weight: 600; }
+  #app { display: grid; grid-template-columns: 220px minmax(0, 1fr) 320px; gap: 16px; padding: 16px 20px; align-items: start; }
+  /* medium panes (e.g. the browser pane inside the Claude app): scenes on the left, marks list below */
+  @media (max-width: 1000px) { #app { grid-template-columns: 170px minmax(0, 1fr); } #app > aside:last-child { grid-column: 1 / -1; } }
+  @media (max-width: 640px) { #app { grid-template-columns: 1fr; } }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px; }
+  .card h2 { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 0 0 8px; }
+  #scenes button { display: block; width: 100%; text-align: left; margin-bottom: 6px; line-height: 1.3; }
+  #scenes button.on { border-color: var(--brand); box-shadow: inset 0 0 0 1px var(--brand); }
+  #scenes small { color: var(--muted); display: block; }
+  #tools { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  #tools button.on { background: var(--brand); color: #fff; border-color: var(--brand); }
+  #hint { min-height: 22px; margin: 0 0 10px; color: var(--muted); }
+  #tabs { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
+  #tabs button.on { border-color: var(--brand); box-shadow: inset 0 0 0 1px var(--brand); }
+  #stage { position: relative; line-height: 0; background: #0001; border-radius: 8px; overflow: hidden; user-select: none; touch-action: none; }
+  #stage img { width: 100%; display: block; pointer-events: none; }
+  #stage svg { position: absolute; inset: 0; width: 100%; height: 100%; cursor: crosshair; }
+  .row { border: 1px solid var(--line); border-radius: 8px; padding: 8px; margin-bottom: 8px; font-size: 13px; }
+  .row.sel { border-color: var(--brand); }
+  .row b { display: block; margin-bottom: 4px; }
+  .row label { display: inline-flex; align-items: center; gap: 4px; margin: 2px 8px 2px 0; color: var(--muted); }
+  .row input, .row select { font: inherit; padding: 3px 6px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--ink); }
+  .row input[type=number] { width: 64px; }
+  .row input[type=text] { width: 160px; }
+  .row .del { float: right; padding: 1px 8px; color: var(--warn); }
+  .empty { color: var(--muted); font-size: 13px; }
+  .row.needs { border-color: var(--warn); }
+  .note { color: var(--warn); font-size: 12px; margin-top: 4px; }
+  .tip { background: var(--bg); border-radius: 8px; padding: 8px; font-size: 13px; color: var(--muted); margin-bottom: 8px; }
+  #done { position: fixed; inset: 0; background: var(--bg); display: none; align-items: center; justify-content: center; text-align: center; z-index: 10; }
+  #done div { max-width: 420px; }
+  #err { color: var(--warn); margin: 0 0 8px; font-size: 13px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Placement tool</h1>
+  <span id="sceneTitle"></span>
+  <span id="status">Loading…</span>
+  <button class="primary" id="finish">Finish</button>
+</header>
+<div id="app">
+  <aside class="card"><h2>Scenes</h2><div id="scenes"></div></aside>
+  <main class="card">
+    <p id="err"></p>
+    <div id="tabs"></div>
+    <div id="tools"></div>
+    <p id="hint"></p>
+    <div id="stage"><img id="img" alt=""><svg id="svg"></svg></div>
+  </main>
+  <aside class="card"><h2>On this screen</h2><div id="items"></div></aside>
+</div>
+<div id="done"><div>
+  <h1>All saved ✓</h1>
+  <p>Your positions are in <code>video.config.json</code>.<br>Go back to Claude and say you're done — it will render test frames so you can check them.</p>
+</div></div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const svg = $("svg"), img = $("img");
+const NS = "http://www.w3.org/2000/svg";
+let partialQuad = [];
+let focusKey = null; // [field, index] of a new mark whose text should be edited right away
+const DEFAULT_TEXT = ["Look here", "Your text"];
+let cfg, manifest, si = -1, tool = null, imgPath = "", dragging = null, temp = null, selected = null, saveT = null;
+
+// ---- tools per scene type ----
+const TOOLS = {
+  screen: [
+    ["click", "Cursor click", "Click the button or field the cursor should press."],
+    ["highlight", "Highlight box", "Drag a box around what viewers should notice."],
+    ["callout", "Callout", "Click the exact spot a label should point at."],
+    ["typing", "Typed text", "Drag a box over the field's text area — the text will be typed there."],
+    ["focus", "Focus (crop)", "Drag a box around the part the camera should show for the whole scene."],
+    ["detail", "Detail zoom", "Drag a box around the detail the camera should glide to."],
+  ],
+  photo: [["quad", "Device screen corners", "Click the 4 corners of the device screen: top-left, top-right, bottom-right, bottom-left. Drag a corner to adjust."]],
+};
+const COLORS = { click: "#ff7a59", highlight: "#ffb703", callout: "#5b45e0", typing: "#1f9d6b", focus: "#2563eb", detail: "#d946ef", quad: "#ff7a59" };
+
+const scene = () => cfg.scenes[si];
+const num = (v, d = 1) => Math.round(v * 10 ** d) / 10 ** d;
+const size = () => manifest[imgPath] || { width: img.naturalWidth || 1000, height: img.naturalHeight || 1000 };
+
+// ---- load ----
+async function load() {
+  const r = await fetch("/api/config");
+  ({ config: cfg, manifest } = await r.json());
+  const first = cfg.scenes.findIndex((s) => s.type === "screen" || s.type === "photo");
+  if (first < 0) { $("err").textContent = "This video has no screen or photo scenes to place things on."; $("status").textContent = ""; return; }
+  $("status").textContent = "Saved automatically";
+  drawSceneList();
+  const want = Number(new URLSearchParams(location.search).get("scene")) - 1; // ?scene=2 opens scene 2
+  pick(cfg.scenes[want] && cfg.scenes[want].type !== "end" ? want : first);
+}
+
+function drawSceneList() {
+  $("scenes").innerHTML = "";
+  cfg.scenes.forEach((s, i) => {
+    if (s.type === "end") return;
+    const b = document.createElement("button");
+    b.className = i === si ? "on" : "";
+    const cap = (s.caption || "").replace(/\*\*/g, "").replace(/\n/g, " ");
+    b.innerHTML = `<b>${i + 1} · ${s.type}</b><small>${esc(cap.slice(0, 40)) || "(no caption)"}</small>`;
+    b.onclick = () => pick(i);
+    $("scenes").appendChild(b);
+  });
+}
+const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+function pick(i) {
+  si = i; selected = null; temp = null; partialQuad = [];
+  const s = scene();
+  imgPath = s.image;
+  tool = TOOLS[s.type][0][0];
+  $("sceneTitle").textContent = `Scene ${i + 1} (${s.type}) · ${s.seconds}s`;
+  drawSceneList(); drawTabs(); drawTools(); setImage();
+}
+
+function setImage() {
+  svg.innerHTML = ""; drawItems(); // don't show the previous screenshot's marks while loading
+  img.onload = render;
+  img.src = "/assets/" + imgPath;
+  if (img.complete) render();
+}
+
+function drawTabs() {
+  const s = scene();
+  $("tabs").innerHTML = "";
+  const imgs = s.type === "screen" ? [[s.image, "Screenshot"], ...(s.states ?? []).map((st) => [st.image, `State at ${st.from}s`])] : [];
+  if (imgs.length < 2) return;
+  imgs.forEach(([p, label]) => {
+    const b = document.createElement("button");
+    b.textContent = label; b.className = p === imgPath ? "on" : "";
+    b.onclick = () => { imgPath = p; drawTabs(); setImage(); };
+    $("tabs").appendChild(b);
+  });
+}
+
+function drawTools() {
+  $("tools").innerHTML = "";
+  TOOLS[scene().type].forEach(([id, label, hint]) => {
+    const b = document.createElement("button");
+    b.textContent = label; b.className = id === tool ? "on" : "";
+    b.onclick = () => { tool = id; temp = null; drawTools(); render(); };
+    $("tools").appendChild(b);
+    if (id === tool) $("hint").textContent = hint;
+  });
+}
+
+// ---- save ----
+function scheduleSave() {
+  $("status").textContent = "Saving…"; $("status").className = "";
+  clearTimeout(saveT);
+  saveT = setTimeout(save, 350);
+}
+async function save() {
+  const s = scene();
+  const keys = s.type === "screen" ? ["clicks", "highlights", "callouts", "typing", "focus", "detail"] : ["screen"];
+  const fields = {};
+  keys.forEach((k) => (fields[k] = s[k] === undefined ? null : s[k]));
+  try {
+    const r = await fetch("/api/save", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ index: si, fields }) });
+    if (!r.ok) throw new Error((await r.json()).error);
+    $("status").textContent = "Saved ✓"; $("status").className = "ok";
+  } catch (e) {
+    $("status").textContent = "Couldn't save: " + e.message; $("status").className = "";
+  }
+}
+const changed = () => { scheduleSave(); render(); };
+
+// ---- coordinates ----
+function point(e) {
+  const p = svg.createSVGPoint(); p.x = e.clientX; p.y = e.clientY;
+  const q = p.matrixTransform(svg.getScreenCTM().inverse());
+  const { width, height } = size();
+  return [Math.round(Math.min(Math.max(q.x, 0), width)), Math.round(Math.min(Math.max(q.y, 0), height))];
+}
+const rectOf = (a, b) => ({ x: Math.min(a[0], b[0]), y: Math.min(a[1], b[1]), w: Math.abs(a[0] - b[0]), h: Math.abs(a[1] - b[1]) });
+
+// ---- pointer handling ----
+svg.addEventListener("pointerdown", (e) => {
+  if (e.button !== 0) return;
+  const s = scene(), pt = point(e);
+  const { width } = size();
+  svg.setPointerCapture(e.pointerId);
+  if (tool === "click") {
+    (s.clicks ??= []).push({ x: pt[0], y: pt[1], at: num((s.clicks.at(-1)?.at ?? 0.8) + 1) });
+    selected = ["click", s.clicks.length - 1]; changed();
+  } else if (tool === "callout") {
+    (s.callouts ??= []).push({ x: pt[0], y: pt[1], text: "Look here", side: pt[0] < width / 2 ? "right" : "left", from: 0.5 });
+    selected = ["callout", s.callouts.length - 1]; focusKey = ["callouts", s.callouts.length - 1]; changed();
+  } else if (tool === "quad") {
+    if (!s.screen?.quad) {
+      partialQuad.push(pt);
+      if (partialQuad.length === 4) { (s.screen ??= {}).quad = partialQuad; partialQuad = []; }
+      changed();
+    }
+  } else {
+    dragging = { kind: "draw", start: pt }; temp = rectOf(pt, pt); render();
+  }
+});
+svg.addEventListener("pointermove", (e) => {
+  if (!dragging) return;
+  const pt = point(e), s = scene();
+  if (dragging.kind === "draw") { temp = rectOf(dragging.start, pt); render(); }
+  else if (dragging.kind === "point") {
+    const it = dragging.ref; it.x = pt[0]; it.y = pt[1]; render();
+  } else if (dragging.kind === "corner") {
+    s.screen.quad[dragging.i] = pt; render();
+  }
+});
+svg.addEventListener("pointerup", () => {
+  if (!dragging) return;
+  const d = dragging; dragging = null;
+  if (d.kind === "none") return;
+  const s = scene();
+  if (d.kind === "draw") {
+    const r = temp; temp = null;
+    if (!r || r.w < 8 || r.h < 8) { render(); return; }
+    if (tool === "highlight") { (s.highlights ??= []).push({ x: r.x, y: r.y, w: r.w, h: r.h, from: 0.5 }); selected = ["highlight", s.highlights.length - 1]; }
+    else if (tool === "typing") {
+      (s.typing ??= []).push({ x: r.x + 4, y: r.y, text: "Your text", from: 0.6, size: Math.max(10, Math.round(r.h * 0.55)), clear: { w: r.w - 8, h: r.h } });
+      selected = ["typing", s.typing.length - 1]; focusKey = ["typing", s.typing.length - 1];
+    }
+    else if (tool === "focus") s.focus = { x: Math.round(r.x + r.w / 2), y: Math.round(r.y + r.h / 2), width: r.w, height: r.h };
+    else if (tool === "detail") s.detail = { focus: { x: Math.round(r.x + r.w / 2), y: Math.round(r.y + r.h / 2), width: r.w, height: r.h }, from: 1, ...(s.detail?.duration ? { duration: s.detail.duration } : {}) };
+  }
+  changed();
+});
+
+// ---- drawing ----
+function el(name, attrs, parent = svg) {
+  const n = document.createElementNS(NS, name);
+  for (const [k, v] of Object.entries(attrs)) n.setAttribute(k, v);
+  parent.appendChild(n); return n;
+}
+function render() {
+  const { width: w, height: h } = size();
+  svg.setAttribute("viewBox", `0 0 ${w} ${h}`);
+  svg.innerHTML = "";
+  const u = w / 900; // scale marks to the image
+  const s = scene();
+  const sw = (n) => n * u;
+  const handle = (x, y, color, label, onDown) => {
+    const g = el("g", { style: "cursor:grab" });
+    el("circle", { cx: x, cy: y, r: sw(11), fill: color, stroke: "#fff", "stroke-width": sw(3) }, g);
+    if (label !== undefined) el("text", { x, y: y + sw(4.5), "text-anchor": "middle", "font-size": sw(13), "font-weight": 700, fill: "#fff", style: "pointer-events:none" }, g).textContent = label;
+    g.addEventListener("pointerdown", (e) => { e.stopPropagation(); svg.setPointerCapture(e.pointerId); dragging = onDown; });
+    return g;
+  };
+  const box = (r, color, dash) => el("rect", { x: r.x, y: r.y, width: r.w, height: r.h, fill: color + "22", stroke: color, "stroke-width": sw(3), rx: sw(4), ...(dash ? { "stroke-dasharray": `${sw(10)} ${sw(6)}` } : {}) });
+
+  if (s.type === "screen") {
+    if (s.focus) { // dim everything outside the focus
+      const f = s.focus, fw = f.width, fh = f.height ?? f.width * 0.6;
+      el("path", { d: `M0 0H${w}V${h}H0Z M${f.x - fw / 2} ${f.y - fh / 2}h${fw}v${fh}h${-fw}Z`, fill: "#0008", "fill-rule": "evenodd", style: "pointer-events:none" });
+      box({ x: f.x - fw / 2, y: f.y - fh / 2, w: fw, h: fh }, COLORS.focus, true);
+    }
+    if (s.detail) { const f = s.detail.focus, fh = f.height ?? f.width * 0.6; box({ x: f.x - f.width / 2, y: f.y - fh / 2, w: f.width, h: fh }, COLORS.detail, true); }
+    (s.highlights ?? []).forEach((r) => box(r, COLORS.highlight));
+    (s.typing ?? []).forEach((t) => { const c = t.clear ?? { w: 200, h: t.size * 1.3 }; box({ x: t.x - 4, y: t.y, w: c.w + 8, h: c.h }, COLORS.typing, true);
+      el("text", { x: t.x, y: t.y + (c.h + t.size * 0.7) / 2, "font-size": t.size, fill: COLORS.typing, style: "pointer-events:none", "font-weight": 600 }).textContent = t.text; });
+    (s.callouts ?? []).forEach((c, i) => {
+      el("text", { x: c.x + (c.side === "left" ? -sw(18) : sw(18)), y: c.y + sw(5), "text-anchor": c.side === "left" ? "end" : "start", "font-size": sw(16), "font-weight": 700, fill: COLORS.callout, stroke: "#fff", "stroke-width": sw(4), "paint-order": "stroke", style: "pointer-events:none" }).textContent = c.text.replace(/\*\*/g, "");
+      handle(c.x, c.y, COLORS.callout, undefined, { kind: "point", ref: c });
+    });
+    (s.clicks ?? []).forEach((c, i) => {
+      el("circle", { cx: c.x, cy: c.y, r: sw(26), fill: "none", stroke: COLORS.click, "stroke-width": sw(3), "stroke-dasharray": `${sw(6)} ${sw(5)}` });
+      handle(c.x, c.y, COLORS.click, String(i + 1), { kind: "point", ref: c });
+    });
+  } else {
+    const q = s.screen?.quad ?? partialQuad;
+    if (q.length >= 2) el("polygon", { points: q.map((p) => p.join(",")).join(" "), fill: COLORS.quad + "22", stroke: COLORS.quad, "stroke-width": sw(3) });
+    q.forEach((p, i) => handle(p[0], p[1], COLORS.quad, ["TL", "TR", "BR", "BL"][i], s.screen?.quad?.length === 4 ? { kind: "corner", i } : { kind: "none" }));
+  }
+  if (temp) box(temp, COLORS[tool] || "#888", true);
+  drawItems();
+}
+
+// ---- right panel ----
+function field(label, value, onInput, type = "number", step = 0.1) {
+  const l = document.createElement("label"); l.textContent = label + " ";
+  const i = document.createElement("input"); i.type = type; i.value = value ?? "";
+  if (type === "number") i.step = step;
+  i.oninput = () => { onInput(type === "number" ? (i.value === "" ? undefined : Number(i.value)) : i.value); scheduleSave(); };
+  i.onchange = render;
+  l.appendChild(i); return l;
+}
+function selectField(label, value, opts, onChange) {
+  const l = document.createElement("label"); l.textContent = label + " ";
+  const s = document.createElement("select");
+  opts.forEach((o) => { const op = document.createElement("option"); op.value = o; op.textContent = o; if (o === value) op.selected = true; s.appendChild(op); });
+  s.onchange = () => { onChange(s.value); changed(); };
+  l.appendChild(s); return l;
+}
+function row(title, del, ...fields) {
+  const d = document.createElement("div"); d.className = "row";
+  const b = document.createElement("b"); b.textContent = title;
+  if (del) { const x = document.createElement("button"); x.className = "del"; x.textContent = "Delete"; x.onclick = del; b.prepend(x); }
+  d.appendChild(b); fields.forEach((f) => d.appendChild(f)); return d;
+}
+function drawItems() {
+  const box = $("items"), s = scene();
+  box.innerHTML = "";
+  const list = (key, name, make) => (s[key] ?? []).forEach((it, i) => {
+    const r = make(it, i, () => { s[key].splice(i, 1); if (!s[key].length) delete s[key]; changed(); });
+    if (DEFAULT_TEXT.includes(it.text)) {
+      r.classList.add("needs");
+      const n = document.createElement("div"); n.className = "note"; n.textContent = "Replace this placeholder text"; r.appendChild(n);
+    }
+    box.appendChild(r);
+    if (focusKey && focusKey[0] === key && focusKey[1] === i) { // a new label/typed text: type its text right away
+      focusKey = null;
+      const inp = r.querySelector("input[type=text]");
+      // after the mouse click finishes (it would steal the focus back otherwise)
+      if (inp) setTimeout(() => { inp.focus(); inp.select(); }, 80);
+    }
+  });
+  if (s.type === "screen") {
+    const kinds = [["clicks", "click"], ["highlights", "highlight"], ["callouts", "callout"], ["typing", "typed text"], ["detail", "detail zoom"]].filter(([k]) => s[k] && (!Array.isArray(s[k]) || s[k].length)).map((x) => x[1]);
+    if (kinds.length >= 3) {
+      const t = document.createElement("div"); t.className = "tip";
+      t.textContent = `This screen has ${kinds.length} kinds of marks (${kinds.join(", ")}). One or two read best in the video — too many compete for attention.`;
+      box.appendChild(t);
+    }
+    list("clicks", "Click", (c, i, del) => row(`Click ${i + 1} · (${c.x}, ${c.y})`, del, field("at (s)", c.at, (v) => (c.at = v ?? 0))));
+    list("highlights", "Highlight", (h, i, del) => row(`Highlight ${i + 1}`, del, field("from (s)", h.from, (v) => (h.from = v)), field("to (s)", h.to, (v) => { if (v === undefined) delete h.to; else h.to = v; })));
+    list("callouts", "Callout", (c, i, del) => row(`Callout ${i + 1}`, del, field("text", c.text, (v) => (c.text = v), "text"), selectField("side", c.side ?? "top", ["top", "bottom", "left", "right"], (v) => (c.side = v)), field("from (s)", c.from, (v) => (c.from = v))));
+    list("typing", "Typing", (t, i, del) => row(`Typed text ${i + 1}`, del, field("text", t.text, (v) => (t.text = v), "text"), field("from (s)", t.from, (v) => (t.from = v ?? 0)), field("size", t.size, (v) => (t.size = v ?? 24), "number", 1)));
+    if (s.focus) box.appendChild(row(`Focus · ${s.focus.width}×${s.focus.height ?? "auto"}`, () => { delete s.focus; changed(); }));
+    if (s.detail) box.appendChild(row("Detail zoom", () => { delete s.detail; changed(); }, field("from (s)", s.detail.from, (v) => (s.detail.from = v ?? 0)), field("takes (s)", s.detail.duration ?? 0.9, (v) => (s.detail.duration = v))));
+  } else {
+    const q = s.screen?.quad;
+    if (q) box.appendChild(row("Screen corners set ✓", () => { delete s.screen.quad; partialQuad = []; if (!Object.keys(s.screen).length) delete s.screen; changed(); }));
+    else box.appendChild(row(`Corners: ${partialQuad.length}/4`, partialQuad.length ? () => { partialQuad = []; render(); } : null));
+  }
+  if (!box.children.length) box.innerHTML = '<p class="empty">Nothing placed yet. Pick a tool and click on the screenshot.</p>';
+}
+
+$("finish").onclick = async () => {
+  const left = cfg.scenes.flatMap((sc, i) => [...(sc.callouts ?? []), ...(sc.typing ?? [])].filter((m) => DEFAULT_TEXT.includes(m.text)).map(() => i + 1));
+  if (left.length && !confirm(`Some labels or typed texts still have placeholder text (scene ${[...new Set(left)].join(", ")}). Finish anyway?`)) return;
+  clearTimeout(saveT); await save();
+  fetch("/api/quit", { method: "POST" }).catch(() => {});
+  $("done").style.display = "flex";
+};
+window.addEventListener("keydown", (e) => { if (e.key === "Escape") { temp = null; dragging = null; render(); } });
+load().catch((e) => { $("err").textContent = "Couldn't load: " + e.message; });
+</script>
+</body>
+</html>

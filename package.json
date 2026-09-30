@@ -10,6 +10,7 @@
     "render": "node scripts/prepare-assets.mjs && node scripts/check-config.mjs && remotion render src/index.ts Video out/video.mp4",
     "render:all": "node scripts/prepare-assets.mjs && node scripts/check-config.mjs && node scripts/render-all.mjs",
     "cover": "node scripts/prepare-assets.mjs && node scripts/check-config.mjs && node scripts/cover.mjs",
+    "place": "node scripts/prepare-assets.mjs && node scripts/place.mjs",
     "doctor": "node scripts/doctor.mjs",
     "demo-assets": "node scripts/demo-assets.mjs"
   },
