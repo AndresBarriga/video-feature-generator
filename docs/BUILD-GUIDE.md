@@ -41,6 +41,8 @@ Remotion (React → headless Chrome frames → FFmpeg) ─> out/video.mp4
 | `src/config.ts` | Config schema (TypeScript types) + image-size lookup |
 | `src/layout.ts` | Formats, caption band height, `placeImage` (contain/cover/focus), `toContent` (image px → screen px) |
 | `src/timeline.ts` | Seconds → frames, scene starts (slides overlap 12 frames, cuts don't), caption cues (merged, non-overlapping, first cue visible on frame 0) |
+| `brand.json` + `scripts/brand.mjs` + `scripts/lib/brand.mjs` | The saved brand kit. `src/config.ts` builds `BRAND` as defaults < `brand.json` < the video's `brand` block, so every component keeps reading `BRAND`. The script validates and saves it (hex colors, logo in assets, Google Fonts name, WCAG contrast); the checker warns when a video relies on an unconfigured kit. `prepare-assets.mjs` recreates a neutral `brand.json` if it is missing. |
+| `src/scenes/BrandPreview.tsx` + `scripts/brand-preview.mjs` | The `BrandPreview` composition: caption band, keyword, CTA, colors, font, logo, backdrop in one still |
 | `src/variants.mjs` | Turns the config into ONE concrete render: applies a named variant (translations, dropped scenes, `targetSeconds`) and/or a format. Plain JS so the engine and the scripts share it. |
 | `src/components/DeviceFrame.tsx` | Frames drawn around a screenshot (phone, tablets, browser, laptop, monitor): `DeviceBack` behind the image, `DeviceFront` (camera/island) on top, `deviceExtent`, `imageRadius` |
 | `src/components/Backdrop.tsx` | Area behind screenshots (`brand.backdrop`: plain, soft, dots, grid, glow) |

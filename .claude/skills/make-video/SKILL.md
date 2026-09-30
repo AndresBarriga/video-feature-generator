@@ -41,9 +41,11 @@ before writing the script). Script patterns: `references/script-patterns.md`.
   matching ready-made structure instead.
 
 ## Step 1 — Interview (short, friendly; use AskUserQuestion with options)
-Ask only what you can't infer. Two rounds: first the content (below), then
-"Look and framing" (next section). Use AskUserQuestion with a recommended
-default on every option list, so a non-technical person can just press on.
+Ask only what you can't infer, in three rounds: the content (below), then the
+brand (Step 2 — skipped when `brand.json` is already set up), then "Look and
+framing" (next section; the brand's tone sets its defaults). Use AskUserQuestion
+with a recommended default on every option list, so a non-technical person can
+just press on.
 - **What feature** and **what problem it solves** (one sentence each).
 - **Who watches** (e.g. team leads, IT buyers, existing customers).
 - **What kind of video** → picks the template: `problem-solution` (default),
@@ -59,8 +61,9 @@ default on every option list, so a non-technical person can just press on.
   screenshot), `browser`, `laptop`, `monitor`, `phone`, `tablet-portrait`,
   `tablet-landscape`.
 - **Call to action** for the end card ("Try it free", "Book a demo", "Available now", URL?).
-- **Brand**: logo file? colors? font? A brand-book PDF or website is fine —
-  extract colors/fonts/logo from it (see "Brand kit" below).
+- **Brand**: handled in its own step, right after this interview (Step 2 — Brand
+  kit). Check `brand.json` first: if it says `"configured": true`, just confirm
+  it ("Use the saved Acme brand?"); if not, run the brand round.
 - **A real-world photo** for the opening (optional but recommended): a
   photo of the product in use (a laptop on a desk, a phone in hand, a shop
   counter, a workshop) — ideally with the device screen visible. AI-generated is fine if they have the rights.
@@ -80,7 +83,8 @@ These choices change how the video feels; ask them with options and a default
 - **Device frame**: confirm it (see the device question above), and use the same
   one on every screen.
 - **Background behind screenshots** (`brand.backdrop`): `soft` (default),
-  `plain`, `dots`, `grid` (technical products), `glow` (launches).
+  `plain`, `dots`, `grid` (technical products), `glow` (launches). Start from the
+  backdrop saved in the brand kit; only ask if the video should differ.
 - **What draws the eye**: the main attention device for the key screens —
   cursor clicks (default), highlight boxes, "look here" callouts, zoom to a
   detail, typed text. One per scene at most.
@@ -90,17 +94,42 @@ These choices change how the video feels; ask them with options and a default
 Summarize the choices in one short list before writing the script, so they can
 correct any of them.
 
-## Step 2 — Brand kit
-- Colors → `brand.primary` (band + end card, usually the darkest brand color),
-  `brand.accent` (keywords, CTA button, cursor ripple — the most vivid brand
-  color), `brand.success` (checks/success glows), `brand.background` (light).
-- Font → any Google Fonts family name (`brand.font`). If their font isn't on
-  Google Fonts, pick the closest one and say so.
-- Logo → copy into `assets/brand/`, set `brand.logo`. From a PDF brand book you
-  may export the logo artwork (e.g. with PyMuPDF at 300 dpi, transparent) —
-  that is using their artwork, not recreating it.
-- Brand colors are for the video "chrome" (band, highlights, end card). The
-  app screenshots stay exactly as they are.
+## Step 2 — Brand kit (asked once, then saved for every video)
+The brand lives in `brand.json` at the project root (logo path, colors, font,
+backdrop, tone, notes) and every video reads it; a video may still override any
+field in its own `brand` block. Never guess a brand: a neutral default is used
+until the user's real one is saved, and `npm run check` warns about it.
+
+1. `npm run brand -- show` (or read `brand.json`). `"configured": true` → show the
+   saved values in one line and ask "use it for this video?" — then skip to Step 3.
+2. Otherwise ask the **brand round** with AskUserQuestion (defaults in bold):
+   - **Logo**: I'll send the file · **No logo** · Take it from my website.
+     Use their real artwork only (copy it into `assets/brand/`); never recreate a
+     logo with text; if there is none, leave it out and say so. If taken from a
+     website, tell them what you found and get a yes before using it.
+   - **Colors**: From my website or brand PDF/guidelines (ask for the link/file;
+     read the real colors from it and tell them which you picked for which role) ·
+     **Suggest a palette that fits my tone** · I'll type the hex codes.
+     Roles: `primary` = darkest brand color (caption band, end card, text on it is
+     white), `accent` = the most vivid (keywords, CTA button, cursor),
+     `success` (check marks), `background` (light, behind screenshots).
+   - **Font**: their font (any Google Fonts family; if it isn't on Google Fonts,
+     pick the closest and say so) · a suggestion that fits the tone · **Inter**.
+   - **Tone**: sober · **friendly** · technical. It guides the wording of captions
+     and the backdrop (`sober` → plain/soft, `friendly` → soft, `technical` → grid).
+   - **Guidelines / things to avoid** (free text, optional): words never to use,
+     "no exclamation marks", required disclaimers… saved in `notes`; read it every
+     time you write captions.
+   - **Company/product name** (shown on the brand preview).
+3. Save it: `npm run brand -- set --name "..." --primary "#..." --accent "#..."
+   --success "#..." --background "#..." --font "..." --logo brand/<file> --tone ...
+   --backdrop ... --notes "..."`. It validates colors, the logo file, the font
+   (against Google Fonts when online) and contrast; fix what it reports.
+4. **Show it**: `npm run brand:preview` → `out/brand-preview.png` (caption band with
+   a keyword, CTA button, colors, font). Read it, then show it to the user and ask
+   "Does this look like your brand?" Adjust until they say yes.
+Brand colors are for the video "chrome" (band, highlights, end card); the app
+screenshots stay exactly as they are.
 
 ## Step 3 — Script together (GATE)
 Propose a table: beat, seconds, what's on screen, caption (with **keywords**),

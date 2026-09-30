@@ -3,6 +3,7 @@ import { Video } from "./Video";
 import { CONFIG, FPS } from "./config";
 import { H, W } from "./layout";
 import { TOTAL } from "./timeline";
+import { BrandPreview } from "./scenes/BrandPreview";
 import { CoverScene } from "./scenes/CoverScene";
 import { DemoDesk, DemoLogo, DemoPhoneScreen, DemoScreen } from "./demo/DemoAssets";
 
@@ -13,6 +14,9 @@ export const RemotionRoot: React.FC = () => (
 
     {/* Poster / thumbnail (npm run cover) */}
     <Composition id="Cover" component={CoverScene} durationInFrames={1} fps={FPS} width={W} height={H} />
+
+    {/* Brand kit preview (npm run brand:preview) */}
+    <Composition id="BrandPreview" component={BrandPreview} durationInFrames={1} fps={FPS} width={W} height={H} />
 
     {/* Maintainer tools: generate the fictional demo images (npm run demo-assets) */}
     <Composition

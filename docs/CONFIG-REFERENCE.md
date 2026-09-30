@@ -13,8 +13,9 @@ automatically). Times are in **seconds**.
 | `format` | yes | `"portrait"` | `portrait` 1080×1350 (4:5), `square` 1080×1080, `landscape` 1920×1080. `npm run render:all` exports all three. |
 | `fps` | no | `30` | |
 | `captionStyle` | no | `"words"` | `words` (default): captions enter word by word and keywords get a self-drawing underline. `rise`: the whole caption slides up. |
-| `brand.primary` | yes | `"#2b1d5c"` | Caption band, end card background |
-| `brand.accent` | yes | `"#ff7a59"` | Keywords, CTA button, highlights, callouts, cursor ripple |
+| `brand` | no | `{ "accent": "#ff7a59" }` | Overrides for THIS video only. Anything left out comes from your saved brand kit, [`brand.json`](#brand-kit-brandjson). |
+| `brand.primary` | no | `"#2b1d5c"` | Caption band, end card background |
+| `brand.accent` | no | `"#ff7a59"` | Keywords, CTA button, highlights, callouts, cursor ripple |
 | `brand.success` | no | `"#34c38f"` | End-card wave |
 | `brand.background` | no | `"#f5f4fb"` | Behind screenshots |
 | `brand.backdrop` | no | `"soft"` | Look of the area behind screenshots: `plain` (default), `soft` (gentle gradient), `dots`, `grid`, `glow` (accent halo) |
@@ -23,6 +24,31 @@ automatically). Times are in **seconds**.
 | `cover` | no | `{ "headline": "Organize my\n**week**", "sub": "…" }` | Poster image (`npm run cover`). Optional `image`, `device`, `url`. Defaults: the end card's texts and the last screen scene. |
 | `scenes` | yes | `[...]` | In order. The `end` scene must be last. |
 | `variants` | no | `{ "es": {...} }` | Other versions of the same video. See [Variants](#variants). |
+
+## Brand kit (`brand.json`)
+
+Your brand is saved once, in `brand.json` at the project root, and every video
+uses it. A video can override any field in its own `brand` block (the demo does,
+so it keeps its own look). Order of precedence: built-in defaults < `brand.json` <
+the video's `brand` block. Manage it with `npm run brand` (see Commands) or ask Claude.
+
+| Field | Example | Notes |
+|---|---|---|
+| `configured` | `true` | `false` until a real brand is saved; `npm run check` warns while a video relies on the neutral default |
+| `name` | `"Acme"` | Product/company name (shown on the brand preview) |
+| `primary` | `"#10233f"` | Darkest brand color: caption band and end card (white text sits on it) |
+| `accent` | `"#2ec4b6"` | Most vivid color: keywords, CTA button, highlights, cursor |
+| `success` | `"#7bd88f"` | Check marks, end-card wave |
+| `background` | `"#f3f6f8"` | Behind screenshots |
+| `backdrop` | `"soft"` | `plain`, `soft`, `dots`, `grid`, `glow` |
+| `font` | `"Inter"` | Any Google Fonts family |
+| `logo` | `"brand/logo.png"` | A file inside `assets/` (real artwork only, never text typed as a logo) |
+| `tone` | `"friendly"` | `sober`, `friendly` or `technical`: guides caption wording and the default backdrop (used by Claude, not by the renderer) |
+| `notes` | `"No exclamation marks"` | Free-text guidelines Claude reads when writing captions |
+
+`npm run brand:preview` renders `out/brand-preview.png` (caption band, keyword,
+CTA button, colors, font). `npm run check` warns when the main color is too light
+for the white caption text, or the accent is hard to read on it.
 
 ## Common scene fields
 
@@ -113,5 +139,7 @@ Variants are checked like the main video by `npm run check`.
 | `npm run render` | Final MP4 → `out/video.mp4` (the format in the config) |
 | `npm run render:all` | All three formats in one go → `videos/<title>/exports/`. Options: `-- --formats portrait,landscape`, `-- --variants es,short`, `-- --variants all`, `-- --only-variants es` |
 | `npm run cover` | Poster / thumbnail PNG per format → `videos/<title>/exports/` |
+| `npm run brand -- show` / `set` / `reset` | Show or save the brand kit. `set` takes `--name --primary --accent --success --background --backdrop --font --logo --tone --notes`; it validates colors, the logo file, the font (against Google Fonts when online) and contrast. |
+| `npm run brand:preview` | One image of the brand kit as a video uses it → `out/brand-preview.png` |
 | `npm run doctor` | Checks the computer (Node, engine, rendering browser, disk, internet) and explains what to fix |
 | `node scripts/new-video.mjs "Name"` | Archive current video, start a new one. `--template launch\|tutorial\|comparison\|before-after\|problem-solution\|mobile` starts from a ready-made structure; `--demo` restores the demo |

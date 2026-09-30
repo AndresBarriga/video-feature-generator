@@ -21,6 +21,10 @@ Have ready (Claude will ask for them, but it goes faster if you have them):
    - **The content:** the feature, who watches, what kind of video, which
      **format(s)** you need (4:5, square, wide — pick only what you'll use), the
      device it runs on, your call to action and your brand.
+   - **Your brand** (asked once, then saved for every video): your logo, colors
+     (from your website or brand guidelines, a suggested palette, or codes you
+     type), font, tone (sober, friendly, technical) and anything to avoid. Claude
+     shows you a preview image to approve.
    - **Look and framing:** how it opens (photo or straight to the screen), the
      pace (calm, standard, snappy), whether to show whole screens or crop to the
      part that matters, the background behind screenshots, what draws the eye
@@ -32,6 +36,23 @@ Have ready (Claude will ask for them, but it goes faster if you have them):
 4. **Build** — Claude puts it together (a few minutes).
 5. **Test frames** — still images of every scene. Give feedback.
 6. **Final video** — an MP4 in `videos/<your video>/`.
+
+## 2b. Your brand kit
+
+The first time, Claude asks for your brand and saves it in `brand.json`. After
+that, every video uses it, and Claude only asks "use the saved brand?".
+
+- **Logo:** send the file, or say none. Claude never draws a logo with text.
+- **Colors:** give a website or brand-guidelines PDF and Claude reads the real
+  colors; or pick a suggested palette; or type the hex codes.
+- **Font:** any Google Fonts family (if yours isn't there, Claude picks the closest).
+- **Tone and guidelines:** sober, friendly or technical, plus things to avoid
+  ("no exclamation marks", words never to use). Claude follows them in the captions.
+- **Preview:** Claude renders one image showing the caption band, a keyword, the
+  button and your colors, so you can say "yes, that's us" before anything is built.
+
+To change the brand later, say "update my brand" (for one video only: "use a
+different accent for this video").
 
 ## 3. Taking good screenshots
 

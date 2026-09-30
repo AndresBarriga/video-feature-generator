@@ -45,12 +45,15 @@ Ask for changes in plain words to see what is possible:
 
 Type **`/make-video`** (or *"I want to make a video for my new feature"*). Claude:
 
-1. asks a few questions (feature, who watches, where you'll post it, your brand);
-2. proposes the script — **you approve it before anything is built**;
-3. tells you exactly which screenshots to take (use fictional data!);
-4. builds the video and checks your screenshots;
-5. shows you test frames — **you approve them before the final render**;
-6. gives you the MP4 (and, if you ask, all formats, other languages and a cover).
+1. asks a few questions: the feature, who watches, the kind of video, **which
+   format(s) you need**, the device it runs on, and how it should look and open;
+2. sets up **your brand once** (logo, colors, font, tone) and shows a preview to
+   approve: every later video reuses it;
+3. proposes the script — **you approve it before anything is built**;
+4. tells you exactly which screenshots to take (use fictional data!);
+5. checks your screenshots and builds the video (you click where things go on a small page);
+6. shows you test frames — **you approve them before the final render**;
+7. renders only the formats you picked (and, if you ask, other languages and a cover).
 
 Your videos end up in the **`videos`** folder.
 

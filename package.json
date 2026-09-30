@@ -11,6 +11,8 @@
     "render:all": "node scripts/prepare-assets.mjs && node scripts/check-config.mjs && node scripts/render-all.mjs",
     "cover": "node scripts/prepare-assets.mjs && node scripts/check-config.mjs && node scripts/cover.mjs",
     "place": "node scripts/prepare-assets.mjs && node scripts/place.mjs",
+    "brand": "node scripts/brand.mjs",
+    "brand:preview": "node scripts/prepare-assets.mjs && node scripts/check-config.mjs && node scripts/brand-preview.mjs",
     "doctor": "node scripts/doctor.mjs",
     "demo-assets": "node scripts/demo-assets.mjs"
   },
