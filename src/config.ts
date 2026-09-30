@@ -1,5 +1,6 @@
 import raw from "../video.config.json";
 import manifest from "../assets/manifest.json";
+import brandFile from "../brand.json"; // your saved brand kit (npm run brand); a video can override any field
 import { applyVariant } from "./variants.mjs";
 
 // Set per render by scripts/render-all.mjs, stills and cover (Remotion "envVariables").
@@ -90,7 +91,7 @@ export type Variant = {
   title?: string;
   format?: Format;
   captionStyle?: CaptionStyle;
-  brand?: Partial<VideoConfig["brand"]>;
+  brand?: Partial<Brand>;
   /** Scene number (1-based, of the original list) -> fields to change, e.g. { "1": { "caption": "..." } } */
   scenes?: Record<string, Partial<Scene>>;
   /** Scene number -> new duration in seconds */
@@ -103,6 +104,16 @@ export type Variant = {
 
 export type Cover = { headline?: string; sub?: string; image?: string; device?: Device; url?: string };
 
+export type Brand = {
+  primary: string; // caption band, end card
+  accent: string; // highlighted keywords, CTA, cursor ripple
+  success?: string; // check marks, success glows
+  background?: string; // behind screenshots
+  backdrop?: Backdrop; // look of the area behind screenshots
+  font?: string; // any Google Fonts family, e.g. "Inter"
+  logo?: string; // path inside assets/, e.g. "brand/logo.png"
+};
+
 export type VideoConfig = {
   title: string;
   format: Format;
@@ -112,15 +123,8 @@ export type VideoConfig = {
   /** Poster image (npm run cover): headline, sub-line and a hero screenshot. */
   cover?: Cover;
   variants?: Record<string, Variant>;
-  brand: {
-    primary: string; // caption band, end card
-    accent: string; // highlighted keywords, CTA, cursor ripple
-    success?: string; // check marks, success glows
-    background?: string; // behind screenshots
-    backdrop?: Backdrop; // look of the area behind screenshots: plain (default), soft, dots, grid, glow
-    font?: string; // any Google Fonts family, e.g. "Inter"
-    logo?: string; // path inside assets/, e.g. "brand/logo.png"
-  };
+  /** Overrides for this video only. Anything left out comes from brand.json (your saved brand kit). */
+  brand?: Partial<Brand>;
   scenes: Scene[];
 };
 
@@ -137,9 +141,17 @@ export const imageSize = (path: string) => {
   return s;
 };
 
+// Brand = defaults < brand.json (saved kit) < this video's own "brand" block.
+const KIT_KEYS = ["primary", "accent", "success", "background", "backdrop", "font", "logo"];
+const kit = Object.fromEntries(
+  Object.entries(brandFile as Record<string, unknown>).filter(([k, v]) => KIT_KEYS.includes(k) && typeof v === "string" && v !== "")
+);
 export const BRAND = {
+  primary: "#1e293b",
+  accent: "#3b82f6",
   success: "#2bb673",
   background: "#f2f5fa",
   font: "Inter",
+  ...kit,
   ...CONFIG.brand,
-};
+} as Brand & { success: string; background: string; font: string };

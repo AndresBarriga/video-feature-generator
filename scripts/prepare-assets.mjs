@@ -3,6 +3,7 @@
 import { readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { join, relative, extname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { ensureBrandFile } from "./lib/brand.mjs";
 
 const ROOT = fileURLToPath(new URL("../assets/", import.meta.url));
 const EXT = new Set([".png", ".jpg", ".jpeg", ".webp"]);
@@ -52,3 +53,4 @@ for (const file of walk(ROOT)) {
 }
 writeFileSync(join(ROOT, "manifest.json"), JSON.stringify(manifest, null, 2) + "\n");
 console.log(`assets: ${Object.keys(manifest).length} image(s) indexed`);
+ensureBrandFile(); // brand.json always exists (neutral default until you set up your brand)

@@ -2,14 +2,6 @@
   "title": "Quick tutorial",
   "format": "portrait",
   "fps": 30,
-  "brand": {
-    "primary": "#2b1d5c",
-    "accent": "#ff7a59",
-    "success": "#34c38f",
-    "background": "#f5f4fb",
-    "backdrop": "soft",
-    "font": "Inter"
-  },
   "scenes": [
     {
       "type": "screen",

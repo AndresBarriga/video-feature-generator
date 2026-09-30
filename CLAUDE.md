@@ -26,6 +26,11 @@ This repo turns app screenshots into short feature videos. Users are usually
   corners): have the user click them with `npm run place` (see the skill, Step 5)
   instead of estimating coordinates from the image.
 - Setup problems: run `npm run doctor` and relay its advice in plain words.
+- The brand (logo, colors, font, tone, notes) is saved once in `brand.json` and used
+  by every video (a video's own `brand` block only overrides). Never invent a brand:
+  if `brand.json` says `"configured": false`, run the brand round (skill, Step 2),
+  save it with `npm run brand -- set ...`, and show `npm run brand:preview`. Read
+  `notes` and `tone` every time you write captions.
 - Never put real customer data in videos. Never recreate a logo with text.
 - Speak plainly. Don't ask the user to run commands you can run yourself.
 - Windows: keep the repo in a short path (e.g. `C:\Users\<you>\feature-video-studio`);

@@ -4,10 +4,12 @@
 //   node scripts/new-video.mjs "My feature" --template tutorial   -> a ready-made structure
 //   node scripts/new-video.mjs --list-templates                   -> what templates exist
 //   node scripts/new-video.mjs --demo                             -> restore the Taskly demo
+// New videos use your saved brand kit (brand.json, see: npm run brand).
 import { copyFileSync, existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseArgs, slug } from "./lib/common.mjs";
+import { ensureBrandFile, readBrand } from "./lib/brand.mjs";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 const cfgPath = path.join(root, "video.config.json");
@@ -33,9 +35,18 @@ if (existsSync(cfgPath)) {
 }
 
 const name = rest.join(" ").trim();
+ensureBrandFile();
+const brandNote = () => {
+  const b = readBrand();
+  console.log(
+    b.configured
+      ? `Brand kit: ${b.name || "saved"} (brand.json) — used by this video.`
+      : "Brand kit NOT set up yet: this video uses neutral colors. Set it up once — ask Claude, or: npm run brand -- set --primary ... --accent ... --font ..."
+  );
+};
 if (flags.demo) {
   copyFileSync(path.join(root, "examples", "demo.config.json"), cfgPath);
-  console.log("Restored the Taskly demo.");
+  console.log("Restored the Taskly demo (it carries its own brand).");
 } else if (flags.template) {
   const tpl = JSON.parse(readFileSync(path.join(tplDir, `${flags.template}.json`), "utf8"));
   tpl.title = name || tpl.title;
@@ -43,13 +54,12 @@ if (flags.demo) {
   mkdirSync(path.join(root, "videos", slug(tpl.title)), { recursive: true });
   console.log(`Started "${tpl.title}" from the "${flags.template}" template.`);
   console.log("The text in [brackets] and the demo images are placeholders — replace them with yours.");
+  brandNote();
 } else {
-  const demo = JSON.parse(readFileSync(path.join(root, "examples", "demo.config.json"), "utf8"));
   const starter = {
     title: name || "New feature video",
     format: "portrait",
     fps: 30,
-    brand: { ...demo.brand, logo: undefined },
     scenes: [
       { type: "screen", image: "screens/demo-01-before.png", seconds: 3, caption: "Replace me with **your** first caption" },
       { type: "end", seconds: 3, headline: name || "Your feature", cta: "Try it free" },
@@ -57,5 +67,6 @@ if (flags.demo) {
   };
   writeFileSync(cfgPath, JSON.stringify(starter, null, 2) + "\n");
   mkdirSync(path.join(root, "videos", slug(starter.title)), { recursive: true });
-  console.log(`Started "${starter.title}". Brand colors copied from the demo — replace them with yours.`);
+  console.log(`Started "${starter.title}".`);
+  brandNote();
 }

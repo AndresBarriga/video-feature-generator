@@ -7,6 +7,7 @@ import { readFileSync, statSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { applyVariant, totalSeconds, variantNames } from "../src/variants.mjs";
+import { checkBrand, readBrand } from "./lib/brand.mjs";
 
 const here = fileURLToPath(new URL(".", import.meta.url));
 const read = (p) => JSON.parse(readFileSync(path.join(here, p), "utf8"));
@@ -18,6 +19,7 @@ try {
   process.exit(1);
 }
 const manifest = read("../assets/manifest.json");
+const brandKit = readBrand(); // saved brand kit (brand.json); a video may override fields in its "brand" block
 const FORMATS = ["portrait", "square", "landscape"];
 const TRANSITIONS = ["cut", "slide-left", "slide-up"];
 const DEVICES = ["phone", "tablet-portrait", "tablet-landscape", "browser", "laptop", "monitor"];
@@ -53,10 +55,13 @@ const validate = (cfg) => {
   const inside = (m, x, y) => m && x >= 0 && y >= 0 && x <= m.width && y <= m.height;
 
   if (!FORMATS.includes(cfg.format)) errors.push(`"format" must be one of: ${FORMATS.join(", ")}`);
-  if (!cfg.brand?.primary) errors.push(`"brand.primary" (a color like "#16254c") is missing`);
-  if (cfg.brand?.logo && !manifest[cfg.brand.logo]) errors.push(`Logo not found in assets: ${cfg.brand.logo}`);
-  if (cfg.brand?.backdrop && !BACKDROPS.includes(cfg.brand.backdrop))
-    errors.push(`"brand.backdrop" must be one of: ${BACKDROPS.join(", ")}`);
+  // Brand = saved kit + this video's own overrides
+  const brand = { ...brandKit, ...Object.fromEntries(Object.entries(cfg.brand ?? {}).filter(([, v]) => v !== "" && v != null)) };
+  const bc = checkBrand(brand, (p) => !!manifest[p]);
+  errors.push(...bc.errors);
+  warn.push(...bc.warn);
+  if (!brandKit.configured && !cfg.brand?.primary)
+    warn.push(`Your brand kit isn't set up yet, so this video uses neutral colors. Set it up once (logo, colors, font, tone): ask Claude, or run "npm run brand -- set --primary ... --accent ...".`);
   if (cfg.captionStyle && !["words", "rise"].includes(cfg.captionStyle)) errors.push(`"captionStyle" must be "words" or "rise"`);
   if (!Array.isArray(cfg.scenes) || cfg.scenes.length === 0) {
     errors.push(`"scenes" is empty`);
