@@ -42,7 +42,7 @@ Remotion (React → headless Chrome frames → FFmpeg) ─> out/video.mp4
 | `src/layout.ts` | Formats, caption band height, `placeImage` (contain/cover/focus), `toContent` (image px → screen px) |
 | `src/timeline.ts` | Seconds → frames, scene starts (slides overlap 12 frames, cuts don't), caption cues (merged, non-overlapping, first cue visible on frame 0) |
 | `src/variants.mjs` | Turns the config into ONE concrete render: applies a named variant (translations, dropped scenes, `targetSeconds`) and/or a format. Plain JS so the engine and the scripts share it. |
-| `src/components/DeviceFrame.tsx` | Frames drawn around a screenshot (phone, tablets, browser, laptop, monitor): `DeviceBack` behind the image, `DeviceFront` (camera/island) on top, `deviceMargin`, `imageRadius` |
+| `src/components/DeviceFrame.tsx` | Frames drawn around a screenshot (phone, tablets, browser, laptop, monitor): `DeviceBack` behind the image, `DeviceFront` (camera/island) on top, `deviceExtent`, `imageRadius` |
 | `src/components/Backdrop.tsx` | Area behind screenshots (`brand.backdrop`: plain, soft, dots, grid, glow) |
 | `src/scenes/CoverScene.tsx` | Poster / thumbnail composition (`Cover`, rendered by `scripts/cover.mjs`) |
 | `src/components/CaptionBand.tsx` | Brand band, wave, logo, caption with `**keywords**` + sub-line; word-by-word entry with a self-drawing keyword underline (`captionStyle`) |
@@ -82,7 +82,7 @@ Remotion (React → headless Chrome frames → FFmpeg) ─> out/video.mp4
   `variants.mjs` so `targetSeconds` scales it.
 - **Frames are relative to the screenshot.** `DeviceFrame` sizes everything from
   the screenshot's on-screen size, so frames follow zoom and the detail glide.
-  `deviceMargin()` reserves room for the frame in `placeImage`, and a photo dive
+  `deviceExtent()` tells `placeImage` how much room the frame adds (browser bar, laptop base, monitor stand…), so the whole device is fitted and centered, and a photo dive
   fades the frame in (`afterDive`) so the landing stays invisible.
 - **Caption track outside the scenes.** Scenes slide and cut; captions live in
   one global layer with back-to-back time windows, so they never overlap and

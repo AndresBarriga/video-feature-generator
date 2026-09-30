@@ -42,5 +42,17 @@
   "screens/studio-03-result.png": {
     "width": 1920,
     "height": 1080
+  },
+  "screens/studio-04-github.png": {
+    "width": 2000,
+    "height": 1250
+  },
+  "screens/studio-05-install.png": {
+    "width": 840,
+    "height": 330
+  },
+  "screens/studio-06-tool.png": {
+    "width": 1888,
+    "height": 1096
   }
 }

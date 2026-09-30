@@ -22,7 +22,9 @@ export type Placement = { scale: number; cx: number; cy: number };
 
 /** Fit `focus` into the content area. Default: whole image contained ("screen")
  *  or cover-filled ("photo"). */
-export const placeImage = (path: string, focus: Focus | undefined, mode: "contain" | "cover", margin = 0.94): Placement => {
+export type Extent = { top: number; bottom: number; left: number; right: number };
+
+export const placeImage = (path: string, focus: Focus | undefined, mode: "contain" | "cover", margin = 0.94, extent?: Extent): Placement => {
   const { width: iw, height: ih } = imageSize(path);
   const aspect = CONTENT.w / CONTENT.h;
   if (focus) {
@@ -34,9 +36,11 @@ export const placeImage = (path: string, focus: Focus | undefined, mode: "contai
     const fw = Math.min(iw, ih * aspect);
     return { scale: CONTENT.w / fw, cx: iw / 2, cy: ih / 2 };
   }
-  // contain with a small margin so the screenshot reads as a screen
-  const scale = Math.min((CONTENT.w * margin) / iw, (CONTENT.h * margin) / ih);
-  return { scale, cx: iw / 2, cy: ih / 2 };
+  // contain with a small margin so the screenshot reads as a screen. `extent` = the space a device
+  // frame adds around it: the whole device (not just the image) is fitted and centered.
+  const e = extent ?? { top: 0, bottom: 0, left: 0, right: 0 };
+  const scale = Math.min((CONTENT.w * margin) / (iw + e.left + e.right), (CONTENT.h * margin) / (ih + e.top + e.bottom));
+  return { scale, cx: iw / 2 + (e.right - e.left) / 2, cy: ih / 2 + (e.bottom - e.top) / 2 };
 };
 
 /** Image point -> content-area point for a placement at zoom `z` (about the focus). */

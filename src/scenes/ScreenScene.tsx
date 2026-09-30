@@ -4,14 +4,18 @@ import { CONTENT, Placement, U, placeImage, toContent } from "../layout";
 import { frames } from "../timeline";
 import { Cursor } from "../components/Cursor";
 import { Backdrop } from "../components/Backdrop";
-import { DeviceBack, DeviceFront, deviceMargin, imageRadius } from "../components/DeviceFrame";
+import { DeviceBack, DeviceFront, deviceExtent, imageRadius } from "../components/DeviceFrame";
 import { renderMarked } from "../components/CaptionBand";
 import { FONT } from "../components/FontLoader";
 
 const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 
 /** First-frame placement of a screen scene (used by a photo scene diving into it). */
-export const screenPlacement = (s: ScreenSceneT) => placeImage(s.image, s.focus, "contain", deviceMargin(s.device));
+export const screenPlacement = (s: ScreenSceneT) => {
+  if (s.focus || !s.device) return placeImage(s.image, s.focus, "contain");
+  const { width, height } = imageSize(s.image);
+  return placeImage(s.image, undefined, "contain", 0.92, deviceExtent(s.device, width, height)); // fit the whole device
+};
 
 const UI_FONT = '-apple-system, "Segoe UI", Roboto, Arial, sans-serif';
 

@@ -22,7 +22,9 @@
   button:hover { border-color: var(--brand); }
   button.primary { background: var(--brand); color: #fff; border-color: var(--brand); font-weight: 600; }
   #app { display: grid; grid-template-columns: 220px minmax(0, 1fr) 320px; gap: 16px; padding: 16px 20px; align-items: start; }
-  @media (max-width: 1000px) { #app { grid-template-columns: 1fr; } }
+  /* medium panes (e.g. the browser pane inside the Claude app): scenes on the left, marks list below */
+  @media (max-width: 1000px) { #app { grid-template-columns: 170px minmax(0, 1fr); } #app > aside:last-child { grid-column: 1 / -1; } }
+  @media (max-width: 640px) { #app { grid-template-columns: 1fr; } }
   .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px; }
   .card h2 { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 0 0 8px; }
   #scenes button { display: block; width: 100%; text-align: left; margin-bottom: 6px; line-height: 1.3; }

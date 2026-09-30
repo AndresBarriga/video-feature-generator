@@ -10,46 +10,41 @@
     "backdrop": "soft",
     "font": "Inter"
   },
-  "cover": {
-    "headline": "Feature Video\n**Studio**",
-    "sub": "Screenshots in. Video out.",
-    "image": "screens/studio-02-place.png",
-    "device": "laptop"
-  },
   "scenes": [
     {
-      "type": "screen",
-      "device": "browser",
-      "url": "github.com/AndresBarriga/video-feature-generator",
-      "image": "screens/studio-04-github.png",
-      "seconds": 3.0,
-      "caption": "**Open the repo** on GitHub.",
-      "callouts": [
-        {
-          "x": 1335,
-          "y": 308,
-          "text": "**Copy** the link",
-          "side": "bottom",
-          "from": 0.7
-        }
-      ]
-    },
-    {
-      "type": "screen",
-      "device": "laptop",
-      "image": "screens/studio-05-install.png",
-      "seconds": 3.0,
-      "caption": "**Paste the link** in Claude.",
-      "transitionIn": "slide-left",
-      "zoomTo": 1.16
+      "type": "photo",
+      "image": "photos/demo-desk.png",
+      "seconds": 3.4,
+      "caption": "Need a **feature video**,\nbut no editor?",
+      "pushIn": 1.08,
+      "screen": {
+        "quad": [
+          [
+            432,
+            186
+          ],
+          [
+            1168,
+            176
+          ],
+          [
+            1176,
+            698
+          ],
+          [
+            424,
+            704
+          ]
+        ]
+      },
+      "diveIntoNext": true
     },
     {
       "type": "screen",
       "device": "laptop",
       "image": "screens/studio-01-chat.png",
-      "seconds": 3.0,
-      "caption": "Answer a few **questions**.",
-      "transitionIn": "slide-left",
+      "seconds": 3.2,
+      "caption": "**Tell Claude** about your feature.",
       "detail": {
         "focus": {
           "x": 590,
@@ -79,25 +74,35 @@
     {
       "type": "screen",
       "device": "laptop",
-      "image": "screens/studio-06-tool.png",
-      "seconds": 4.0,
-      "caption": "**Click** where things go,\nright inside Claude.",
+      "image": "screens/studio-02-place.png",
+      "seconds": 3.4,
+      "caption": "**Click** where things go.",
       "transitionIn": "slide-left",
       "clicks": [
         {
-          "x": 1500,
-          "y": 615,
+          "x": 1290,
+          "y": 405,
           "at": 1.8
         }
       ],
-      "zoomTo": 1.12
+      "highlights": [
+        {
+          "x": 355,
+          "y": 142,
+          "w": 870,
+          "h": 60,
+          "from": 0.4,
+          "to": 1.7
+        }
+      ]
     },
     {
       "type": "screen",
       "device": "laptop",
       "image": "screens/studio-03-result.png",
-      "seconds": 3.4,
-      "caption": "A **finished video**,\nin every format.",
+      "seconds": 4.8,
+      "caption": "A **finished video**\nin every format.",
+      "sub": "On your own Claude plan.",
       "transitionIn": "slide-left",
       "zoomTo": 1.06
     },
@@ -111,5 +116,11 @@
       "url": "github.com/AndresBarriga/video-feature-generator",
       "backgroundImage": "photos/demo-desk.png"
     }
-  ]
+  ],
+  "cover": {
+    "headline": "Feature Video\n**Studio**",
+    "sub": "Screenshots in. Video out.",
+    "image": "screens/studio-02-place.png",
+    "device": "laptop"
+  }
 }
