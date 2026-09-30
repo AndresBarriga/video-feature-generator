@@ -59,6 +59,7 @@ Remotion (React → headless Chrome frames → FFmpeg) ─> out/video.mp4
 | `scripts/doctor.mjs` | Checks Node, engine, rendering browser, disk, internet; plain-language fixes. Run by the setup scripts. |
 | `scripts/new-video.mjs` | Archive current video → `videos/`, start a new one (`--template`, `--demo`) |
 | `templates/*.json` | Ready-made structures (problem-solution, launch, tutorial, comparison, before-after, mobile), using the demo images as placeholders |
+| `scripts/place.mjs` + `tools/place.html` | Click-to-place tool. A dependency-free Node server (localhost only, Host-header checked) serves the page, the assets and two endpoints (`/api/save` patches only whitelisted scene fields, `/api/quit`). Writes the config in the repo's compact JSON style and keeps a first-save backup in `out/video.config.backup.json`. To let it place a new field, add it to `FIELDS` in the server and to the page's tools. |
 | `tools/picker.html` | Click on an image to get pixel coordinates / device-screen corners |
 
 ## Key techniques (and why)

@@ -109,6 +109,7 @@ Variants are checked like the main video by `npm run check`.
 | `npm run check` | Validates the config (friendly errors) and looks at your screenshots: different sizes, low resolution, wrong orientation for a device, screen corners in the wrong order, captions too short to read. Also type-checks. |
 | `npm run stills` | Test frames → `out/stills/` (`npm run stills -- 40 120` for specific frames; add `--format landscape` or `--variant es`) |
 | `npm run preview` | Opens the timeline in the browser (Remotion Studio) |
+| `npm run place` | Click-to-place page on localhost: click where the cursor clicks, drag highlight/focus/typing boxes, place callouts, set the photo's screen corners. Saves into `video.config.json` as you go; **Finish** closes it. |
 | `npm run render` | Final MP4 → `out/video.mp4` (the format in the config) |
 | `npm run render:all` | All three formats in one go → `videos/<title>/exports/`. Options: `-- --formats portrait,landscape`, `-- --variants es,short`, `-- --variants all`, `-- --only-variants es` |
 | `npm run cover` | Poster / thumbnail PNG per format → `videos/<title>/exports/` |

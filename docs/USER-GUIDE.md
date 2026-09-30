@@ -42,6 +42,15 @@ Have ready (Claude will ask for them, but it goes faster if you have them):
 - Attach them in the chat, or drop them into `assets/screens/` (photos into
   `assets/photos/`, logo into `assets/brand/`).
 
+## 3b. Clicking where things go
+
+Instead of describing positions in words ("a bit to the left…"), Claude opens a
+small page in the app: your screenshot, with tools to **click where the cursor
+should press**, **drag a box** around what to highlight, **point a label** at a
+spot, **box a field** for typed text, and **mark the screen** in your photo. You
+click, it saves as you go, and every mark can be dragged, edited or deleted.
+Press **Finish** when done, and tell Claude; it then shows you test frames.
+
 ## 4. Asking for changes (examples that work)
 
 - "Make the first caption shorter." / "Change 'sorted itself' to 'organizes itself'."

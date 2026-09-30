@@ -18,6 +18,9 @@ This repo turns app screenshots into short feature videos. Users are usually
 - Exports: `npm run render:all` (all formats / `--variants`), `npm run cover`,
   `npm run stills -- --format landscape --variant es`. Other languages and shorter
   cuts are `variants` in the config, never copies of the file.
+- Positions (clicks, highlights, callouts, typed text, focus, detail, photo screen
+  corners): have the user click them with `npm run place` (see the skill, Step 5)
+  instead of estimating coordinates from the image.
 - Setup problems: run `npm run doctor` and relay its advice in plain words.
 - Never put real customer data in videos. Never recreate a logo with text.
 - Speak plainly. Don't ask the user to run commands you can run yourself.

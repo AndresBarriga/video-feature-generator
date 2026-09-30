@@ -59,6 +59,7 @@ screenshots), less after that.
 - Ready-made structures: **launch, quick tutorial, old vs new way, before/after,
   mobile app**. Other languages and shorter cuts as variants of the same video,
   plus a cover image for each format.
+- You click where things go (cursor, highlights, labels, typed text, the device screen in a photo) on a small page instead of describing positions in words.
 - Claude checks your screenshots before building (same size, big enough, right
   orientation) and `npm run doctor` explains any setup problem in plain words.
 

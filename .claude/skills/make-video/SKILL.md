@@ -131,8 +131,24 @@ retake before continuing; explain each warning in plain words.
 3. Run `npm run check` and fix every error it reports.
 
 Coordinates are always in **pixels of the original image**. Get sizes from
-`assets/manifest.json`. When placing clicks/highlights, view the screenshot and
-estimate carefully; verify with stills (next step) and correct.
+`assets/manifest.json`.
+
+**Let the user place things by clicking (preferred).** Once the scenes exist in
+`video.config.json` with their `image` and captions, don't guess positions:
+1. Run `npm run place` in the background. It serves the placement page on
+   localhost (prints the address, normally http://localhost:4173) and stays
+   running until the user presses **Finish**.
+2. Open that address in the built-in browser pane (or give it to the user).
+3. Tell them, per scene, what to click: the button the cursor should press, a
+   box around what to notice, the exact spot a label points at, a box over a
+   field for typed text, the crop, and the 4 corners of the device screen in
+   the photo (top-left, top-right, bottom-right, bottom-left). It saves as they
+   go and every mark can be dragged, edited or deleted.
+4. When they say they're done (or press Finish), re-read `video.config.json`:
+   the tool wrote `clicks`, `highlights`, `callouts`, `typing`, `focus`, `detail`
+   and `screen.quad`. Then run `npm run check` and `npm run stills`.
+Fall back to estimating from the image yourself only for small tweaks, or if
+the page can't be opened; then verify carefully with stills and correct.
 
 ## Step 6 — Test frames (GATE)
 Run `npm run stills` → PNGs in `out/stills/` (middle of each scene + every
