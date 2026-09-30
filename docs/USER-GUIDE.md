@@ -16,8 +16,16 @@ Have ready (Claude will ask for them, but it goes faster if you have them):
 
 ## 2. The conversation, step by step
 
-1. **Questions** — a few multiple-choice questions about the feature, audience,
-   format and call to action.
+1. **Questions** — two short rounds of multiple-choice questions (every option has
+   a recommended default, so you can just press on):
+   - **The content:** the feature, who watches, what kind of video, which
+     **format(s)** you need (4:5, square, wide — pick only what you'll use), the
+     device it runs on, your call to action and your brand.
+   - **Look and framing:** how it opens (photo or straight to the screen), the
+     pace (calm, standard, snappy), whether to show whole screens or crop to the
+     part that matters, the background behind screenshots, what draws the eye
+     (cursor clicks, highlight boxes, "look here" labels, zoom to a detail), how
+     captions appear and how the end card looks.
 2. **Script** — Claude proposes a short table: each beat, how long, what's on
    screen, the caption. Change anything. Nothing is built until you say OK.
 3. **Screenshot list** — exactly which screens and states to capture.
@@ -96,8 +104,10 @@ app** — and it starts from a ready-made structure.
 
 When you're happy with the video, ask for extras:
 
-- **"Give me all three formats"** → 4:5 (LinkedIn/Instagram), square and wide
-  (website, YouTube, slides), in `videos/<your video>/exports/`.
+- **"Give me another format"** → Claude asks which one(s) you need: 4:5
+  (LinkedIn/Instagram), square, or wide (website, YouTube, slides). Only those are
+  rendered, into `videos/<your video>/exports/`. Claude shows you the frames in
+  that format first, because the framing changes between formats.
 - **"Make a Spanish version"** (any language) → same video, translated texts.
   Claude shows you the frames first, since translated captions are often longer.
 - **"Make a 10-second version"** → same video, shorter (for stories or ads).

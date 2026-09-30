@@ -41,15 +41,19 @@ before writing the script). Script patterns: `references/script-patterns.md`.
   matching ready-made structure instead.
 
 ## Step 1 — Interview (short, friendly; use AskUserQuestion with options)
-Ask only what you can't infer. Group into 1–2 rounds:
+Ask only what you can't infer. Two rounds: first the content (below), then
+"Look and framing" (next section). Use AskUserQuestion with a recommended
+default on every option list, so a non-technical person can just press on.
 - **What feature** and **what problem it solves** (one sentence each).
 - **Who watches** (e.g. team leads, IT buyers, existing customers).
 - **What kind of video** → picks the template: `problem-solution` (default),
   `launch` (announcement), `tutorial` (how to), `comparison` (old vs new way),
   `before-after` (short), `mobile` (phone app). See `references/script-patterns.md`.
-- **Where it's posted** → format: LinkedIn/Instagram feed = `portrait` (4:5,
-  default); `square`; website/YouTube/slides = `landscape`. Offer "all three
-  formats" — it's one command (Step 7).
+- **Where it's posted → which format(s) they need.** Ask it as a multi-select
+  and render ONLY what they pick, never all three by default: LinkedIn/Instagram
+  feed = `portrait` (4:5, the usual default); `square` (1:1); website / YouTube /
+  slides = `landscape` (16:9). Any combination is fine. Set `format` in the
+  config to the main one (it's the one the test frames show first).
 - **Other languages?** (optional) → a `variants` entry per language (Step 7).
 - **What device is the product used on** → decides the frame: none (plain
   screenshot), `browser`, `laptop`, `monitor`, `phone`, `tablet-portrait`,
@@ -60,6 +64,31 @@ Ask only what you can't infer. Group into 1–2 rounds:
 - **A real-world photo** for the opening (optional but recommended): a
   photo of the product in use (a laptop on a desk, a phone in hand, a shop
   counter, a workshop) — ideally with the device screen visible. AI-generated is fine if they have the rights.
+
+### Look and framing (second round of the interview)
+These choices change how the video feels; ask them with options and a default
+(mention the default is safe). Skip what a template already decides.
+- **Opening**: start on a real-world photo of the product in use (hook, needs a
+  photo) — or go straight to the screen? (default: straight to the screen unless
+  they have a photo).
+- **Pace / length**: calm (~20 s, longer holds), standard (~15 s), snappy
+  (~10–12 s, for stories/ads). Sets `seconds` and whether scenes are dropped.
+- **Framing of each screen**: show the whole screen, or crop to the part that
+  matters (`focus`) so the UI is readable on a phone? Ask "which part of each
+  screen matters most?" — they can mark it with the click-to-place tool (Step 5).
+  If they need several formats, every `focus` gets a `height` too.
+- **Device frame**: confirm it (see the device question above), and use the same
+  one on every screen.
+- **Background behind screenshots** (`brand.backdrop`): `soft` (default),
+  `plain`, `dots`, `grid` (technical products), `glow` (launches).
+- **What draws the eye**: the main attention device for the key screens —
+  cursor clicks (default), highlight boxes, "look here" callouts, zoom to a
+  detail, typed text. One per scene at most.
+- **Captions**: word by word (default) or the whole line sliding up (`captionStyle`).
+- **End card**: CTA text, URL yes/no, and whether it sits on the blurred
+  opening photo (needs the photo) or on the plain brand color.
+Summarize the choices in one short list before writing the script, so they can
+correct any of them.
 
 ## Step 2 — Brand kit
 - Colors → `brand.primary` (band + end card, usually the darkest brand color),
@@ -157,7 +186,8 @@ the page can't be opened; then verify carefully with stills and correct.
 
 ## Step 6 — Test frames (GATE)
 Run `npm run stills` → PNGs in `out/stills/` (middle of each scene + every
-click). Read them yourself first and fix obvious problems (cursor not on the
+click). If they chose more than one format, also show
+`npm run stills -- --format <other>` for each — framing differs between formats. Read them yourself first and fix obvious problems (cursor not on the
 button, highlight misplaced, caption too long, UI too small). Then show them to
 the user (send the files if you can) with a one-line description each, and ask
 for feedback. Specific frames: `npm run stills -- 40 120`.
@@ -165,12 +195,15 @@ Offer `npm run preview` if they want to scrub the timeline themselves
 (opens Remotion Studio in the browser).
 
 ## Step 7 — Render and deliver
-`npm run render` → `out/video.mp4` (H.264, yuv420p — correct colors on social).
-Copy it to `videos/<slug>/<slug>.mp4` with a clear name. Tell them where it is,
-its length and size, and offer the extras (all are one command):
-- **All formats at once:** `npm run render:all` → portrait + square + landscape in
-  `videos/<slug>/exports/`. Show `npm run stills -- --format landscape` first if
-  they haven't seen the wide version.
+Render ONLY the format(s) they chose in Step 1 (confirm them again if the
+conversation changed its mind): `npm run render:all -- --formats <their picks>`,
+e.g. `--formats portrait` or `--formats portrait,landscape` → H.264, yuv420p
+(correct colors on social) in `videos/<slug>/exports/`. Do NOT render all three
+unless they asked for all three. (`npm run render` also works for just the
+format set in the config → `out/video.mp4`.) Tell them where the files are,
+their length and size, and offer the extras (all are one command):
+- **Another format later:** if they ask for one they haven't seen, show
+  `npm run stills -- --format <name>` first, then `npm run render:all -- --formats <name>`.
 - **Poster / thumbnail:** `npm run cover` → a PNG per format (headline + hero
   screenshot). Set `cover` in the config to change its texts.
 - **Other language or a shorter cut:** add a `variants` entry (translate the
