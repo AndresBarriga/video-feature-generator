@@ -1,0 +1,59 @@
+{
+  "title": "Problem to solution",
+  "format": "portrait",
+  "fps": 30,
+  "brand": {
+    "primary": "#2b1d5c",
+    "accent": "#ff7a59",
+    "success": "#34c38f",
+    "background": "#f5f4fb",
+    "backdrop": "soft",
+    "font": "Inter"
+  },
+  "scenes": [
+    {
+      "type": "photo",
+      "image": "photos/demo-desk.png",
+      "seconds": 3,
+      "caption": "Still\n**[doing the painful thing]**?",
+      "pushIn": 1.08,
+      "screen": { "quad": [[432, 186], [1168, 178], [1176, 698], [424, 704]] },
+      "diveIntoNext": true
+    },
+    {
+      "type": "screen",
+      "image": "screens/demo-01-before.png",
+      "seconds": 2.8,
+      "caption": "**[Verb]** the [thing].",
+      "clicks": [{ "x": 1038, "y": 170, "at": 1.8 }],
+      "highlights": [{ "x": 908, "y": 144, "w": 260, "h": 52, "from": 0.5, "to": 1.9 }]
+    },
+    {
+      "type": "screen",
+      "image": "screens/demo-02-dialog.png",
+      "seconds": 2.6,
+      "caption": "**[Verb]** the [thing].",
+      "transitionIn": "slide-up"
+    },
+    {
+      "type": "screen",
+      "image": "screens/demo-03-after.png",
+      "seconds": 3.8,
+      "caption": "The [thing]\n**[does itself]**.",
+      "sub": "[One supporting line.]",
+      "transitionIn": "slide-left",
+      "zoomTo": 1.1,
+      "focus": { "x": 640, "y": 470, "width": 1280, "height": 560 },
+      "highlights": [{ "x": 112, "y": 240, "w": 1056, "h": 500, "from": 0.4 }]
+    },
+    {
+      "type": "end",
+      "seconds": 3.2,
+      "headline": "[Feature name]",
+      "tagline": "[for Product]",
+      "subline": "[One supporting line.]",
+      "cta": "[Try it free]",
+      "backgroundImage": "photos/demo-desk.png"
+    }
+  ]
+}

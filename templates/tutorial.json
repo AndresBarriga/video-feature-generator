@@ -1,0 +1,88 @@
+{
+  "title": "Quick tutorial",
+  "format": "portrait",
+  "fps": 30,
+  "brand": {
+    "primary": "#2b1d5c",
+    "accent": "#ff7a59",
+    "success": "#34c38f",
+    "background": "#f5f4fb",
+    "backdrop": "soft",
+    "font": "Inter"
+  },
+  "scenes": [
+    {
+      "type": "screen",
+      "image": "screens/demo-01-before.png",
+      "seconds": 3,
+      "caption": "How to\n**[get the result]**",
+      "zoomTo": 1.05
+    },
+    {
+      "type": "screen",
+      "image": "screens/demo-01-before.png",
+      "seconds": 3,
+      "caption": "**1.** [Open / click X]",
+      "clicks": [
+        {
+          "x": 1038,
+          "y": 170,
+          "at": 1.8
+        }
+      ],
+      "highlights": [
+        {
+          "x": 908,
+          "y": 144,
+          "w": 260,
+          "h": 52,
+          "from": 0.5,
+          "to": 1.9
+        }
+      ]
+    },
+    {
+      "type": "screen",
+      "image": "screens/demo-04-add.png",
+      "seconds": 3.8,
+      "caption": "**2.** [Fill in Y]",
+      "transitionIn": "slide-up",
+      "typing": [
+        {
+          "x": 344,
+          "y": 346,
+          "text": "[Your text here]",
+          "from": 0.6,
+          "size": 26,
+          "weight": 600,
+          "color": "#241f3d",
+          "clear": {
+            "w": 620,
+            "h": 44
+          }
+        }
+      ]
+    },
+    {
+      "type": "screen",
+      "image": "screens/demo-03-after.png",
+      "seconds": 3.4,
+      "caption": "**3.** [Confirm] — done.",
+      "transitionIn": "slide-left",
+      "zoomTo": 1.08,
+      "focus": {
+        "x": 640,
+        "y": 470,
+        "width": 1280,
+        "height": 560
+      }
+    },
+    {
+      "type": "end",
+      "seconds": 3.2,
+      "headline": "[More tips]",
+      "subline": "[Read the docs]",
+      "cta": "[Learn more]"
+    }
+  ]
+}

@@ -33,7 +33,11 @@ Have ready (Claude will ask for them, but it goes faster if you have them):
 - Close notifications, chat pop-ups, cookie banners.
 - Browser zoom **100–125 %**; full window is fine (Claude crops).
 - Capture **each state**: before, during (e.g. dialog open), after.
-- **Mobile app?** Take phone screenshots and say so — Claude puts them in a phone frame.
+- **Mobile app or tablet?** Take portrait screenshots and say so — Claude puts
+  them in a phone or iPad frame. Web app? Claude can put them in a browser
+  window; laptop and desktop-monitor frames exist too.
+- Claude checks your screenshots for you (same size, big enough, right
+  orientation) and tells you in plain words if one should be retaken.
 - Windows: `Win + Shift + S`. Mac: `Cmd + Shift + 4`, then `Space` to capture a window.
 - Attach them in the chat, or drop them into `assets/screens/` (photos into
   `assets/photos/`, logo into `assets/brand/`).
@@ -43,7 +47,11 @@ Have ready (Claude will ask for them, but it goes faster if you have them):
 - "Make the first caption shorter." / "Change 'sorted itself' to 'organizes itself'."
 - "Hold the result screen one second longer."
 - "Zoom in more on the results." / "The cursor should click the purple button."
-- "Use the square format too." / "Make a 10-second version."
+- "Use the square format too." / "Give me all three formats." / "Make a 10-second version."
+- "Make a Spanish version." / "Make me a cover image for LinkedIn."
+- "Put the app in a browser window." / "Use the laptop frame."
+- "Point out the total with a label." / "Zoom in on that number."
+- "Type the task name into the field." / "Give the background a soft look."
 - "The start feels too fast." / "Remove the URL from the end card."
 
 Be specific about *what* feels wrong; Claude handles the *how*.
@@ -71,7 +79,27 @@ your browser (Remotion Studio) and you can scrub through it.
 
 Say "start a new video". Claude archives the current one in `videos/` and
 starts fresh. Your previous videos stay there with their config, so you can
-come back and change them later.
+come back and change them later. Tell Claude what kind of video you want —
+**launch announcement, quick tutorial, old way vs new way, before/after, mobile
+app** — and it starts from a ready-made structure.
+
+## 8. Exports: formats, languages, cover
+
+When you're happy with the video, ask for extras:
+
+- **"Give me all three formats"** → 4:5 (LinkedIn/Instagram), square and wide
+  (website, YouTube, slides), in `videos/<your video>/exports/`.
+- **"Make a Spanish version"** (any language) → same video, translated texts.
+  Claude shows you the frames first, since translated captions are often longer.
+- **"Make a 10-second version"** → same video, shorter (for stories or ads).
+- **"Make a cover image"** → a poster/thumbnail PNG with the headline and the
+  app, in each format.
+
+## 9. If something doesn't work
+
+Run **`npm run doctor`** (or ask Claude "check my setup"): it checks Node, the
+video engine, the rendering browser, disk space and internet, and says in plain
+words what to fix.
 
 ## FAQ
 

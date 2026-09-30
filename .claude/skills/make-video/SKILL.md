@@ -32,15 +32,28 @@ before writing the script). Script patterns: `references/script-patterns.md`.
   (Windows) or `setup-mac.command` (Mac) from the repo folder, or install Node
   LTS from nodejs.org. Stop until fixed.
 - If `node_modules/` is missing, run `npm install` (takes ~1 min; say so).
+- If anything about setup looks off (first run, an error about the browser,
+  fonts, disk), run `npm run doctor`: it checks everything and says in plain
+  words what to fix.
 - If they want to start fresh, run `node scripts/new-video.mjs <name>` — it
   archives the current config to `videos/<old title>/` and starts a blank one.
+  After the script is agreed (Step 3) use `--template <kind>` to start from the
+  matching ready-made structure instead.
 
 ## Step 1 — Interview (short, friendly; use AskUserQuestion with options)
 Ask only what you can't infer. Group into 1–2 rounds:
 - **What feature** and **what problem it solves** (one sentence each).
 - **Who watches** (e.g. team leads, IT buyers, existing customers).
+- **What kind of video** → picks the template: `problem-solution` (default),
+  `launch` (announcement), `tutorial` (how to), `comparison` (old vs new way),
+  `before-after` (short), `mobile` (phone app). See `references/script-patterns.md`.
 - **Where it's posted** → format: LinkedIn/Instagram feed = `portrait` (4:5,
-  default); `square`; website/YouTube/slides = `landscape`.
+  default); `square`; website/YouTube/slides = `landscape`. Offer "all three
+  formats" — it's one command (Step 7).
+- **Other languages?** (optional) → a `variants` entry per language (Step 7).
+- **What device is the product used on** → decides the frame: none (plain
+  screenshot), `browser`, `laptop`, `monitor`, `phone`, `tablet-portrait`,
+  `tablet-landscape`.
 - **Call to action** for the end card ("Try it free", "Book a demo", "Available now", URL?).
 - **Brand**: logo file? colors? font? A brand-book PDF or website is fine —
   extract colors/fonts/logo from it (see "Brand kit" below).
@@ -81,6 +94,11 @@ progress. 3. The result AFTER (everything filled in)." Tips to give:
   `assets/brand/`) — or just attach them in the chat and you copy them there.
 Wait until you have every image. Check each one visually and say if one is
 wrong (wrong state, real data visible, cropped too tight) before building.
+Then run `npm run check`: it is also the screenshot assistant — it reports
+screenshots of different sizes, low resolution, portrait/landscape mismatches
+with the chosen device, photo-screen corners in the wrong order or a different
+shape than the screenshot, and captions too short to be read. Fix or ask for a
+retake before continuing; explain each warning in plain words.
 
 ## Step 5 — Build
 1. Run `node scripts/prepare-assets.mjs` (indexes image sizes).
@@ -94,9 +112,18 @@ wrong (wrong state, real data visible, cropped too tight) before building.
      = readable on a phone). Add `clicks` where the user would click (cursor
      leads every click), `highlights` for what to notice, `states` for
      before/after of the same screen, `zoomTo` 1.05–1.12 for slow push-ins.
-   - Mobile app (portrait screenshots)? Add `"device": "phone"` to the
-     `screen` scene: it draws a phone frame around the screenshot (see
-     `examples/mobile.config.json`). Don't use `focus` to crop the phone frame away.
+   - `device` draws a frame around the screenshot: `phone` (portrait shots;
+     see `examples/mobile.config.json`), `tablet-portrait`, `tablet-landscape`,
+     `browser` (add `url`), `laptop`, `monitor`. Use the same device on all
+     screens of a video. Don't use `focus` to crop the frame away.
+   - `callouts` ("look here" label + arrow at a point), `detail` (camera glides
+     to a small part of the screen) and `typing` (text typed into a field; use
+     `clear` to hide the placeholder) — see `examples/showcase.config.json`.
+     Use them sparingly: one per scene at most; the cursor still leads every click.
+   - `brand.backdrop` (`soft`, `dots`, `grid`, `glow`) gives the area behind
+     screenshots a designed look. `soft` is a safe default.
+   - Exporting several formats? Give every `focus` a `height` too, so the area
+     also fits square and landscape.
    - `transitionIn`: `cut` by default; `slide-up` when a dialog/modal opens;
      `slide-left` for "next step". Never cross-fades.
    - `end` scene last: headline, tagline, subline, cta, optional url,
@@ -119,9 +146,18 @@ Offer `npm run preview` if they want to scrub the timeline themselves
 ## Step 7 — Render and deliver
 `npm run render` → `out/video.mp4` (H.264, yuv420p — correct colors on social).
 Copy it to `videos/<slug>/<slug>.mp4` with a clear name. Tell them where it is,
-its length and size, and offer: another format (square/landscape), a shorter
-cut, or changes. If a render fails with EPERM/rename, the old MP4 is open in a
-player — render to a new name.
+its length and size, and offer the extras (all are one command):
+- **All formats at once:** `npm run render:all` → portrait + square + landscape in
+  `videos/<slug>/exports/`. Show `npm run stills -- --format landscape` first if
+  they haven't seen the wide version.
+- **Poster / thumbnail:** `npm run cover` → a PNG per format (headline + hero
+  screenshot). Set `cover` in the config to change its texts.
+- **Other language or a shorter cut:** add a `variants` entry (translate the
+  captions/end card in `scenes`; or `drop` scenes / `targetSeconds` for a short
+  version), run `npm run check` and `npm run stills -- --variant <name>`, show
+  the frames, then `npm run render:all -- --variants <name>` (or `--only-variants`).
+If a render fails with EPERM/rename, the old MP4 is open in a player — close it
+or render to a new name.
 
 ## Editing an existing video
 Read `video.config.json`, apply the change, run `npm run stills` for the
@@ -131,7 +167,7 @@ different crop → `focus`; click position → `clicks`; end text → end scene.
 
 ## When the engine can't do it
 If they need something the config can't express (e.g. a UI that must animate
-field by field, a custom illustration, a typed text effect), explain the
+field by field, a custom illustration, a chart that draws itself), explain the
 trade-off and offer to build a custom scene following `docs/BUILD-GUIDE.md`
 (section "Custom scenes"). That takes much longer and uses more of their Claude
 usage — say so before starting.

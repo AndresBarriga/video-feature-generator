@@ -23,8 +23,19 @@ export const PhotoScene: React.FC<{ scene: PhotoSceneT; next?: ScreenScene }> = 
   const diveT = dive ? interpolate(frame, [D - 30, D - 1], [0, 1], { ...clamp, easing: Easing.in(Easing.cubic) }) : 0;
   const flatT = dive ? interpolate(frame, [D - 22, D - 1], [0, 1], { ...clamp, easing: Easing.inOut(Easing.cubic) }) : 0;
 
-  const base = placeImage(scene.image, scene.focus, "cover");
+  let base = placeImage(scene.image, scene.focus, "cover");
   const quadImg = scene.screen?.quad;
+  // Wide formats crop the photo; keep the device screen fully in view.
+  if (quadImg && !scene.focus) {
+    const xs = quadImg.map((q) => q[0]);
+    const ys = quadImg.map((q) => q[1]);
+    const [x0, x1, y0, y1] = [Math.min(...xs), Math.max(...xs), Math.min(...ys), Math.max(...ys)];
+    const pad = 0.09 * Math.max(x1 - x0, y1 - y0);
+    const fit = (c: number, lo: number, hi: number) => (lo <= hi ? Math.min(Math.max(c, lo), hi) : c);
+    const halfW = CONTENT.w / base.scale / 2;
+    const halfH = CONTENT.h / base.scale / 2;
+    base = { ...base, cx: fit(base.cx, x1 + pad - halfW, x0 - pad + halfW), cy: fit(base.cy, y1 + pad - halfH, y0 - pad + halfH) };
+  }
   const qc: Pt = quadImg
     ? [quadImg.reduce((s, q) => s + q[0], 0) / 4, quadImg.reduce((s, q) => s + q[1], 0) / 4]
     : [base.cx, base.cy];

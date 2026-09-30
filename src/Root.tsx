@@ -3,12 +3,16 @@ import { Video } from "./Video";
 import { CONFIG, FPS } from "./config";
 import { H, W } from "./layout";
 import { TOTAL } from "./timeline";
+import { CoverScene } from "./scenes/CoverScene";
 import { DemoDesk, DemoLogo, DemoPhoneScreen, DemoScreen } from "./demo/DemoAssets";
 
 export const RemotionRoot: React.FC = () => (
   <>
     {/* The video described by video.config.json */}
     <Composition id="Video" component={Video} durationInFrames={Math.max(1, TOTAL)} fps={FPS} width={W} height={H} />
+
+    {/* Poster / thumbnail (npm run cover) */}
+    <Composition id="Cover" component={CoverScene} durationInFrames={1} fps={FPS} width={W} height={H} />
 
     {/* Maintainer tools: generate the fictional demo images (npm run demo-assets) */}
     <Composition

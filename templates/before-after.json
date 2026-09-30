@@ -1,0 +1,36 @@
+{
+  "title": "Before and after",
+  "format": "portrait",
+  "fps": 30,
+  "brand": {
+    "primary": "#2b1d5c",
+    "accent": "#ff7a59",
+    "success": "#34c38f",
+    "background": "#f5f4fb",
+    "backdrop": "soft",
+    "font": "Inter"
+  },
+  "scenes": [
+    {
+      "type": "screen",
+      "image": "screens/demo-01-before.png",
+      "seconds": 3.2,
+      "caption": "**[Old way]**\ntakes ages."
+    },
+    {
+      "type": "screen",
+      "image": "screens/demo-03-after.png",
+      "seconds": 3.6,
+      "caption": "Now it takes\n**seconds**.",
+      "transitionIn": "slide-left",
+      "zoomTo": 1.08,
+      "focus": { "x": 640, "y": 470, "width": 1280, "height": 560 }
+    },
+    {
+      "type": "end",
+      "seconds": 3.2,
+      "headline": "[Feature name]",
+      "cta": "[Try it free]"
+    }
+  ]
+}

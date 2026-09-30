@@ -41,16 +41,24 @@ Remotion (React → headless Chrome frames → FFmpeg) ─> out/video.mp4
 | `src/config.ts` | Config schema (TypeScript types) + image-size lookup |
 | `src/layout.ts` | Formats, caption band height, `placeImage` (contain/cover/focus), `toContent` (image px → screen px) |
 | `src/timeline.ts` | Seconds → frames, scene starts (slides overlap 12 frames, cuts don't), caption cues (merged, non-overlapping, first cue visible on frame 0) |
-| `src/components/CaptionBand.tsx` | Brand band, wave, logo, caption with `**keywords**` + sub-line |
+| `src/variants.mjs` | Turns the config into ONE concrete render: applies a named variant (translations, dropped scenes, `targetSeconds`) and/or a format. Plain JS so the engine and the scripts share it. |
+| `src/components/DeviceFrame.tsx` | Frames drawn around a screenshot (phone, tablets, browser, laptop, monitor): `DeviceBack` behind the image, `DeviceFront` (camera/island) on top, `deviceMargin`, `imageRadius` |
+| `src/components/Backdrop.tsx` | Area behind screenshots (`brand.backdrop`: plain, soft, dots, grid, glow) |
+| `src/scenes/CoverScene.tsx` | Poster / thumbnail composition (`Cover`, rendered by `scripts/cover.mjs`) |
+| `src/components/CaptionBand.tsx` | Brand band, wave, logo, caption with `**keywords**` + sub-line; word-by-word entry with a self-drawing keyword underline (`captionStyle`) |
 | `src/components/Cursor.tsx` | Cursor rules: fade in at focus center, straight decelerating moves, ripple, fade out |
 | `src/components/perspective.ts` | `quadMatrix3d` — maps a rectangle onto 4 corners (screenshot on a device in a photo) |
-| `src/scenes/ScreenScene.tsx` | Screenshot + focus/zoom + states + highlights + clicks |
+| `src/scenes/ScreenScene.tsx` | Screenshot + device frame + backdrop + focus/zoom + glide to a detail + states + highlights + callouts + typed text + clicks |
 | `src/scenes/PhotoScene.tsx` | Photo + push-in + screenshot on device + dive into the next scene |
 | `src/scenes/EndScene.tsx` | Closing card |
 | `src/demo/DemoAssets.tsx` | Generates the fictional demo images (`npm run demo-assets`) |
-| `scripts/check-config.mjs` | Plain-language validation before rendering |
-| `scripts/stills.mjs` | Bundles once, renders key frames (scene middles + clicks) |
-| `scripts/new-video.mjs` | Archive current video → `videos/`, start a new one |
+| `scripts/check-config.mjs` | Plain-language validation before rendering, for the video and every variant. Doubles as the screenshot assistant (sizes, resolution, orientation vs device, quad order/shape, caption reading time). |
+| `scripts/stills.mjs` | Bundles once, renders key frames (scene middles + clicks); `--format`, `--variant` |
+| `scripts/render-all.mjs` | Renders formats × variants into `videos/<title>/exports/` (one bundle, `envVariables` per render) |
+| `scripts/cover.mjs` | Renders the `Cover` still per format |
+| `scripts/doctor.mjs` | Checks Node, engine, rendering browser, disk, internet; plain-language fixes. Run by the setup scripts. |
+| `scripts/new-video.mjs` | Archive current video → `videos/`, start a new one (`--template`, `--demo`) |
+| `templates/*.json` | Ready-made structures (problem-solution, launch, tutorial, comparison, before-after, mobile), using the demo images as placeholders |
 | `tools/picker.html` | Click on an image to get pixel coordinates / device-screen corners |
 
 ## Key techniques (and why)
@@ -63,6 +71,18 @@ Remotion (React → headless Chrome frames → FFmpeg) ─> out/video.mp4
   quad to the exact rectangle where the next `ScreenScene` draws its image on
   frame 0 (`screenPlacement()`). Same image, same rectangle → a hard cut nobody
   sees.
+- **One config, many renders.** Format and variant are not baked in: the
+  scripts pass `REMOTION_FORMAT` / `REMOTION_VARIANT` as Remotion
+  `envVariables` to `selectComposition` and the render call, and `src/config.ts`
+  resolves them through `applyVariant`. So one bundle serves every format and
+  language. `scripts/stills.mjs` and `check-config.mjs` import the same
+  `src/variants.mjs`, so they always agree with the engine. When you add a
+  scene field that holds a time in seconds, add it to `TIME_KEYS` in
+  `variants.mjs` so `targetSeconds` scales it.
+- **Frames are relative to the screenshot.** `DeviceFrame` sizes everything from
+  the screenshot's on-screen size, so frames follow zoom and the detail glide.
+  `deviceMargin()` reserves room for the frame in `placeImage`, and a photo dive
+  fades the frame in (`afterDive`) so the landing stays invisible.
 - **Caption track outside the scenes.** Scenes slide and cut; captions live in
   one global layer with back-to-back time windows, so they never overlap and
   identical consecutive captions don't flicker.
@@ -99,7 +119,6 @@ costs far more effort/usage. Recipe:
 ## Ideas for later
 
 - Background music track (optional, off by default: feed videos autoplay muted).
-- Batch export of all three formats in one command.
 - `custom` scene type with a small library of animated UI primitives
   (typing text, field fill, toast, progress).
 - A simple local form UI for editing captions without opening JSON.

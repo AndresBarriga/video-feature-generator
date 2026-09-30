@@ -1,0 +1,93 @@
+{
+  "title": "Launch announcement",
+  "format": "portrait",
+  "fps": 30,
+  "brand": {
+    "primary": "#2b1d5c",
+    "accent": "#ff7a59",
+    "success": "#34c38f",
+    "background": "#f5f4fb",
+    "backdrop": "soft",
+    "font": "Inter"
+  },
+  "scenes": [
+    {
+      "type": "screen",
+      "image": "screens/demo-03-after.png",
+      "seconds": 3,
+      "caption": "**[Feature name]**\nis here.",
+      "zoomTo": 1.06
+    },
+    {
+      "type": "screen",
+      "image": "screens/demo-01-before.png",
+      "seconds": 3.4,
+      "caption": "[Do the main thing]\nin **[one step]**.",
+      "clicks": [
+        {
+          "x": 1038,
+          "y": 170,
+          "at": 1.8
+        }
+      ],
+      "highlights": [
+        {
+          "x": 908,
+          "y": 144,
+          "w": 260,
+          "h": 52,
+          "from": 0.5,
+          "to": 1.9
+        }
+      ]
+    },
+    {
+      "type": "screen",
+      "image": "screens/demo-03-after.png",
+      "seconds": 3.4,
+      "caption": "Built for\n**[who it's for]**.",
+      "transitionIn": "slide-left",
+      "detail": {
+        "focus": {
+          "x": 340,
+          "y": 380,
+          "width": 640
+        },
+        "from": 0.8
+      },
+      "callouts": [
+        {
+          "x": 205,
+          "y": 381,
+          "text": "**[the detail]**",
+          "side": "right",
+          "from": 1.5
+        }
+      ]
+    },
+    {
+      "type": "screen",
+      "image": "screens/demo-01-before.png",
+      "seconds": 3,
+      "caption": "Find it under\n**[menu > item]**.",
+      "transitionIn": "slide-left",
+      "highlights": [
+        {
+          "x": 908,
+          "y": 144,
+          "w": 260,
+          "h": 52,
+          "from": 0.4
+        }
+      ]
+    },
+    {
+      "type": "end",
+      "seconds": 3.2,
+      "headline": "[Feature name]",
+      "tagline": "[Available now]",
+      "subline": "[One supporting line.]",
+      "cta": "[Try it free]"
+    }
+  ]
+}
